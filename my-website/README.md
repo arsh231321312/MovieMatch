@@ -1,3 +1,31 @@
+<!-- create database if not exists newdata;
+USE newdata;
+create table if not exists movies(
+movieID int Primary Key,
+director varchar(200),
+title varchar(500),
+releaseYear varchar(4),
+rating varchar(30),
+tagline varchar(500),
+movie_description varchar(1000),
+poster_url varchar(150),
+trailer varchar(150),
+wheretowatch varchar(150)
+);
+create table if not exists users(
+id int auto_increment Primary Key,
+username_hash varchar(64),
+password_hash varchar(64),
+email_hash varchar(64),
+movie_id varchar(200)
+); -->
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
