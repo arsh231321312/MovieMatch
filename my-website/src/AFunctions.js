@@ -1043,17 +1043,6 @@ export function MainPage() {
   function showPrevMovies() {
     setPreviousMoviesButton(!previousMoviesButton);
   }
-  function showImg(dataset) {
-    return (
-      dataset["posterIMG"] && (
-        <img
-          style={{ padding: "5px" }}
-          src={dataset["posterIMG"]}
-          alt="Poster"
-        />
-      )
-    );
-  }
   return (
     <div>
       <div className="page" style={{ backgroundColor: backgroundColor }}>
@@ -1178,7 +1167,13 @@ export function MainPage() {
                     justifyContent: "center",
                   }}
                 >
-                  <showImg/>
+                  {dataset["posterImg"] && (
+                    <img
+                      style={{ padding: "5px" }}
+                      src={dataset["posterImg"]}
+                      alt="Poster"
+                    />
+                  )}
                   <div style={{ width: "600px" }}>
                     <h1 style={{ color: wordColor }}>{dataset["title"]}</h1>
                     <p style={{ color: wordColor }}>{dataset["tagline"]}</p>
