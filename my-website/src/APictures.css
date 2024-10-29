@@ -4,16 +4,17 @@
     width: 1.8vw; /* Set the width of the element */
     height: 3.645vh; /* Set the height of the element */
     position:'absolute';
-    top: 50%;
+    /* top: 50%; */
+    left: 84%;
     cursor: pointer;
-    transform: translate(10.5469vw, -5.07131vh); 
+    /* transform: translate(10.5469vw, -5.07131vh);  */
     
   }
 @media (max-width:600px) {
   .password_eye {
     width: 3.8vw; /* Set the width of the element */
     height: 4.645vh; /* Set the height of the element */
-    transform: translate(33.5469vw, -5.07131vh); 
+    left: 84%;
   }
 }
   

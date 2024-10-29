@@ -58,6 +58,7 @@
 }
 
 .inputBox{
+    width: 80%;
     margin-bottom: 5px; 
     height: 25px;
 }

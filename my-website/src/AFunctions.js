@@ -874,7 +874,7 @@ function PasswordInput({
   revealPassword,
 }) {
   return (
-    <div className="divInputBox">
+    <div className="divInputBox" style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
       <input
         type={revealPassword && "password"}
         className="inputBox"
@@ -889,13 +889,13 @@ function PasswordInput({
         onInvalid={handleInvalid}
         required
       />
-      <br />
       {revealPassword && (
         <img
           src={eye_closed}
           alt="password_eye_open"
           className="password_eye"
           onClick={eye_change}
+          style={{position:'absolute'}}
         ></img>
       )}
       {!revealPassword && (
@@ -906,6 +906,7 @@ function PasswordInput({
           alt="password_eye_closed"
           className="password_eye"
           onClick={eye_change}
+          style={{position:'absolute'}}
         ></img>
       )}
     </div>
