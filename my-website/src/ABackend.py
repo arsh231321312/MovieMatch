@@ -10,7 +10,7 @@ app=Flask(__name__)
 
 CORS(app)
 # Secret key for JWT
-SECRET_KEY = 'your_secret_key'
+SECRET_KEY = 'PoopTropica!!!!!!'
 
 @app.route("/3000", methods=["POST"])
 def handling_data():
@@ -46,7 +46,7 @@ def handling_data():
             if result is None:
                 return jsonify({"status": "failure", "message": "Sign in failed, email does not exist or password is incorrect"})
             else:
-                token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, SECRET_KEY)
+                token = jwt.encode({'username': username,"emailExists":email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}, SECRET_KEY)
                 return jsonify({"status": "success", "message": "Sign in with email successful", "token": token})
         elif(email == False):
             select_query = """
@@ -61,7 +61,7 @@ def handling_data():
             if result is None:
                 return jsonify({"status": "failure", "message": "Sign in failed, username does not exist or password is incorrect"})
             else:
-                token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, SECRET_KEY)
+                token = jwt.encode({'username': username,"emailExists":email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}, SECRET_KEY)
                 return jsonify({"status": "success", "message": "Sign in successful", "token": token})
         else:
             return jsonify({"status": "failure", "message": "Sign in failed, due to an error on our end please make a ticket or send an email to arsh.singh.sandhu1@gmail.com"})
@@ -96,7 +96,7 @@ def handling_data():
         cursor.close()
         # Close the connection when done
         connection.close()
-        token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, SECRET_KEY)
+        token = jwt.encode({'username': username,"emailExists":False, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}, SECRET_KEY)
         return jsonify({"status": "success", "message": "Account created!", "token": token})
     elif (type == 'changePassword'):
         username = data.get('username')

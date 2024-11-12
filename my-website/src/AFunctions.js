@@ -7,12 +7,25 @@ import darkSun from "./pictures/sun.png";
 import sun from "./pictures/sunBright.png";
 import "./APictures.css";
 import { setGlobalState, useGlobalState } from "./GlobalVars";
-const setCookie = (name, value, maxAge) => {
+import { jwtDecode } from "jwt-decode";
+export const setCookie = (name, value, maxAge) => {
   document.cookie = `${name}=${value}; Max-Age=${maxAge}; path=/;`;
 };
-
+export function isCookie(){
+  const token=getCookie('authToken');
+  if (token === null){
+    return false;
+  }
+  const decodedToken = jwtDecode(token);
+  const username = decodedToken.username;
+  const emailExists = decodedToken.emailExists;
+  setGlobalState('usesEmail',emailExists);
+  setGlobalState('account',username);
+  setGlobalState("authenticated",true);
+  return true;
+}
 // Function to get a cookie
-const getCookie = (name) => {
+export const getCookie = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(';').shift();
@@ -20,7 +33,7 @@ const getCookie = (name) => {
 };
 
 // Function to remove a cookie
-const removeCookie = (name) => {
+export const removeCookie = (name) => {
   document.cookie = `${name}=; Max-Age=0; path=/;`;
 };
 export function SignUpForm() {
@@ -117,7 +130,7 @@ export function SignUpForm() {
           setGlobalState("account", hashedUser);
           setLoginFail(false);
           setGotoMainPage(true);
-          setCookie('authToken', data.token, 600);
+          setCookie('authToken', data.token, 15);
         }
       })
       .catch((error) => {
@@ -489,13 +502,7 @@ export function SignInForm() {
   const [loginFailMSG, setLoginFailMSG] = useState("");
   const [gotoMainPage, setGotoMainPage] = useState(false);
   
-  function isCookie(){
-    if (getCookie('authToken') === null){
-      return false;
-    }
-    setGlobalState("authenticated",true);
-    return true;
-  }
+  
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -533,7 +540,7 @@ export function SignInForm() {
           setGlobalState("authenticated", true);
           setGlobalState("usesEmail", emailExists);
           setGlobalState("account", hashedUser);
-          setCookie('authToken', data.token, 600);
+          setCookie('authToken', data.token, 15);
           setLoginFail(false);
           setGotoMainPage(true);
           
@@ -589,8 +596,9 @@ export function SignInForm() {
 
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
-      {gotoMainPage && <Navigate to="/mainPage" />}
       {isCookie() && <Navigate to="/mainPage"/>}
+      {gotoMainPage && <Navigate to="/mainPage" />}
+      
       <Box>
         <div>
           <h1 style={{ position: "relative", color: backgroundColor }}>
