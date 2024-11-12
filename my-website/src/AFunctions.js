@@ -7,7 +7,22 @@ import darkSun from "./pictures/sun.png";
 import sun from "./pictures/sunBright.png";
 import "./APictures.css";
 import { setGlobalState, useGlobalState } from "./GlobalVars";
+const setCookie = (name, value, maxAge) => {
+  document.cookie = `${name}=${value}; Max-Age=${maxAge}; path=/;`;
+};
 
+// Function to get a cookie
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+};
+
+// Function to remove a cookie
+const removeCookie = (name) => {
+  document.cookie = `${name}=; Max-Age=0; path=/;`;
+};
 export function SignUpForm() {
   const [username, setUser] = useState("");
   const [password, setPass] = useState("");
@@ -30,7 +45,7 @@ export function SignUpForm() {
   const [headerCol] = useGlobalState("headerColor");
   const [loginFail, setLoginFail] = useState(false);
   const [loginFailMSG, setLoginFailMSG] = useState("");
-
+  
   function eye_change() {
     if (revealPassword) {
       setRevealPassword(false);
@@ -102,13 +117,14 @@ export function SignUpForm() {
           setGlobalState("account", hashedUser);
           setLoginFail(false);
           setGotoMainPage(true);
+          setCookie('authToken', data.token, 600);
         }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }
-
+  
   function handleChangeUser(e) {
     const user = e.target.value;
     setUser(user);
@@ -165,6 +181,7 @@ export function SignUpForm() {
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
       {gotoMainPage && <Navigate to="/mainPage" />}
+      
       <Box>
         <div>
           <h1 style={{ position: "relative", color: headerCol }}> Register</h1>
@@ -471,6 +488,14 @@ export function SignInForm() {
   const [loginFail, setLoginFail] = useState(false);
   const [loginFailMSG, setLoginFailMSG] = useState("");
   const [gotoMainPage, setGotoMainPage] = useState(false);
+  
+  function isCookie(){
+    if (getCookie('authToken') === null){
+      return false;
+    }
+    setGlobalState("authenticated",true);
+    return true;
+  }
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -508,8 +533,10 @@ export function SignInForm() {
           setGlobalState("authenticated", true);
           setGlobalState("usesEmail", emailExists);
           setGlobalState("account", hashedUser);
+          setCookie('authToken', data.token, 600);
           setLoginFail(false);
           setGotoMainPage(true);
+          
         }
       })
       .catch((error) => {
@@ -563,6 +590,7 @@ export function SignInForm() {
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
       {gotoMainPage && <Navigate to="/mainPage" />}
+      {isCookie() && <Navigate to="/mainPage"/>}
       <Box>
         <div>
           <h1 style={{ position: "relative", color: backgroundColor }}>

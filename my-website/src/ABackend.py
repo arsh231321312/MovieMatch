@@ -2,11 +2,15 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
 from BackEndFunctions import get_random_movie,get_movie_data,load_prev_movie
+import jwt
+import datetime
 
 app=Flask(__name__)
 #remember to change the passwordChange to change password forever, right now it is temprorary and resets on server restart
 
 CORS(app)
+# Secret key for JWT
+SECRET_KEY = 'your_secret_key'
 
 @app.route("/3000", methods=["POST"])
 def handling_data():
@@ -42,7 +46,8 @@ def handling_data():
             if result is None:
                 return jsonify({"status": "failure", "message": "Sign in failed, email does not exist or password is incorrect"})
             else:
-                return jsonify({"status": "success", "message": "Sign in with email successful"})
+                token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, SECRET_KEY)
+                return jsonify({"status": "success", "message": "Sign in with email successful", "token": token})
         elif(email == False):
             select_query = """
             SELECT username_hash, password_hash FROM users WHERE username_hash = %s and password_hash = %s;
@@ -56,7 +61,8 @@ def handling_data():
             if result is None:
                 return jsonify({"status": "failure", "message": "Sign in failed, username does not exist or password is incorrect"})
             else:
-                return jsonify({"status": "success", "message": "Sign in successful"})
+                token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, SECRET_KEY)
+                return jsonify({"status": "success", "message": "Sign in successful", "token": token})
         else:
             return jsonify({"status": "failure", "message": "Sign in failed, due to an error on our end please make a ticket or send an email to arsh.singh.sandhu1@gmail.com"})
     elif (type == "register"):
@@ -90,7 +96,8 @@ def handling_data():
         cursor.close()
         # Close the connection when done
         connection.close()
-        return jsonify({"status": "success", "message": "Account created!"})
+        token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, SECRET_KEY)
+        return jsonify({"status": "success", "message": "Account created!", "token": token})
     elif (type == 'changePassword'):
         username = data.get('username')
         password = data.get('password')
