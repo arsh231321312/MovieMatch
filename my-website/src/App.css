@@ -170,10 +170,22 @@
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+
+@media (min-width: 599px) {
+  .hide-scrollbar {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+    width: 25vw;
+  }
 }
+@media (max-width: 600px) {
+  .hide-scrollbar {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+    width: 60vw;
+  }
+}
+
 @media (min-width: 600px) {
   .frontPageTitle {
 
@@ -187,3 +199,15 @@
 }
 
 
+@media (max-width:600px){ 
+  .poster{
+    padding: "5px";
+    width: 250px;
+    height: 375px;
+  }
+}
+@media (min-width:599px){
+  .poster{
+    padding: "5px";
+  }
+}

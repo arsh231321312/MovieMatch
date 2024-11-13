@@ -970,6 +970,7 @@ function EmailInput({ email, handleChangeEmail, handleSubmit }) {
 }
 
 export function MainPage() {
+  const isMobile = window.innerWidth <= 600;
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [headerCol] = useGlobalState("headerColor");
   // const [darkMode] = useGlobalState('DarkMode');
@@ -1097,23 +1098,28 @@ export function MainPage() {
             </h1>
           </div>
         </header>
-
+        <div>
+          
+        </div>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: showUserData ? "flex-start" : "center",
+            justifyContent: "center",
+            transform: showUserData ? 'translate(-12.5vw,0)' : 'translate(0,0)',
             width: "100%",
           }}
         >
           {showUserData && (
-            <div style={{ marginLeft: "6vh" }}>
+            <div style={{ marginLeft: "3vw" }}>
               <button
                 style={{
-                  display: "flex",
+                  position:'absolute', //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
                   alignItems: "center",
-                  width: "20vw",
-                  justifyContent: "center",
+                  width: "30vw",
+                  justifyContent: "flex-start",
+                  left:'15vw',
+                  transform: 'translate(0,-50%)'
                 }}
                 onClick={showPrevMovies}
               >
@@ -1121,21 +1127,7 @@ export function MainPage() {
               </button>
             </div>
           )}
-          {/* <form onSubmit={handleSubmit} style={{ justifyContent: 'center', position: showUserData ? 'relative' : 'static', left: showUserData ? '6.3vw' : '0' }}>
-    <div className={divSearchBarClass}>
-      <input
-        value={LetterUser}
-        className={searchBarClass}
-        size="60"
-        height="40px"
-        maxLength={30}
-        minLength={6}
-        placeholder="Enter LetterBoxed Username"
-        onChange={(e) => setLetterUser(e.target.value)}
-        required
-      />
-    </div>
-  </form> */}
+          
           <form
             onSubmit={handleSubmit}
             style={{
@@ -1176,11 +1168,11 @@ export function MainPage() {
               {/* First div with fixed width of 50px */}
               <div
                 style={{
-                  width: "25vw",
                   height: "100%",
                   overflowY: "auto", // Change overflow to overflowY
                   wordWrap: "break-word",
                   backgroundColor: "grey",
+                  marginLeft: '3vw'
                 }}
                 className="hide-scrollbar"
               >
@@ -1190,37 +1182,45 @@ export function MainPage() {
               </div>
             </div>
           )}
-
-          {/* Second div that takes up the remaining space */}
           <div
-            style={{ width: "100%", maxWidth: "100vw", textAlign: "center" }}
+            style={{
+              display: isMobile ? 'flex' : undefined,
+              flexDirection: isMobile ? 'column' : undefined
+            }}
           >
-            {showUserData && (
-              <div style={{ overflowY: "auto" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                  }}
-                >
-                  {dataset["posterImg"] && (
-                    <img
-                      style={{ padding: "5px" }}
-                      src={dataset["posterImg"]}
-                      alt="Poster"
-                    />
-                  )}
-                  <div style={{ width: "600px" }}>
-                    <h1 style={{ color: wordColor }}>{dataset["title"]}</h1>
-                    <p style={{ color: wordColor }}>{dataset["tagline"]}</p>
-                    <p style={{ color: wordColor }}>{dataset["description"]}</p>
-                    <ExternalLink url={dataset["whereToWatch"]} />
+            {/* Second div that takes up the remaining space */}
+            <div
+              style={{ width: "100%", maxWidth: "100%", textAlign: "center" }}
+            >
+
+              {showUserData && (
+                <div style={{ overflowY: "auto", justifyContent:'center',alignItems:'center',width:'100vw' }}>
+                  <div
+                    style={{
+                      display: isMobile ? undefined: "flex",
+                      alignItems: isMobile ? undefined : "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {dataset["posterImg"] && (
+                      <img
+                        className="poster"
+                        src={dataset["posterImg"]}
+                        alt="Poster"
+                        
+                      />
+                    )}
+                    <div style={{ width: isMobile ? "90vw" : "600px",paddingLeft:'5vw' }}>
+                      <h1 style={{ color: wordColor,maxWidth:'100vw' }}>{dataset["title"]}</h1>
+                      <p style={{ color: wordColor,maxWidth:'100vw' }}>{dataset["tagline"]}</p>
+                      <p style={{ color: wordColor , maxWidth:'100vw'}}>{dataset["description"]}</p>
+                      <ExternalLink url={dataset["whereToWatch"]} />
+                    </div>
                   </div>
+                  <VideoPlayer src={dataset["trailer"]} />
                 </div>
-                <VideoPlayer src={dataset["trailer"]} />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -1229,11 +1229,23 @@ export function MainPage() {
 }
 
 function VideoPlayer({ src }) {
+  const isMobile = window.innerWidth <= 600;
+const iframeWidth = isMobile ? "340px" : "560px";
+const iframeHeight = isMobile ? "240px" : "315px";
+<iframe
+  width={iframeWidth}
+  height={iframeHeight}
+  src={src}
+  title="Trailer"
+  style={{ border: "none" }}
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
   return (
     <div className="video-container">
       <iframe
-        width="560"
-        height="315"
+        width={iframeWidth}
+        height={iframeHeight}
         src={src}
         title="Trailer"
         style={{ border: "none" }}
