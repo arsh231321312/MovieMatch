@@ -2,7 +2,7 @@
     /*background-image: url('https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-eye-512.png'); */
     background-size: 23px 23px; /* Change the size to 20px by 20px */
     width: 1.8vw; /* Set the width of the element */
-    height: 3.645vh; /* Set the height of the element */
+    height: 1.8vw; /* Set the height of the element */
     position:'absolute';
     /* top: 50%; */
     left: 84%;
@@ -12,8 +12,8 @@
   }
 @media (max-width:600px) {
   .password_eye {
-    width: 3.8vw; /* Set the width of the element */
-    height: 4.645vh; /* Set the height of the element */
+    width: 4.8vw; /* Set the width of the element */
+    height: 4.8vw; /* Set the height of the element */
     left: 84%;
   }
 }
