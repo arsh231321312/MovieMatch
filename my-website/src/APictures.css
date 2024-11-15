@@ -5,9 +5,9 @@
     height: 1.8vw; /* Set the height of the element */
     position:'absolute';
     /* top: 50%; */
-    left: 84%;
+    left: 16vw;
     cursor: pointer;
-    /* transform: translate(10.5469vw, -5.07131vh);  */
+    transform: translate(0,0); 
     
   }
 @media (max-width:600px) {
