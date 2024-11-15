@@ -8,7 +8,7 @@ import datetime
 app=Flask(__name__)
 #remember to change the passwordChange to change password forever, right now it is temprorary and resets on server restart
 
-CORS(app)
+CORS(app, resourse={r"/*": {"origins": "https://localhost:3000"}})
 # Secret key for JWT
 SECRET_KEY = 'PoopTropica!!!!!!'
 
@@ -20,7 +20,7 @@ def handling_data():
     connection = mysql.connector.connect(
         host="localhost",        # Your host, e.g., localhost or AWS RDS instance
         user="root",    # Your MySQL username
-        password="Sandhu57628136$",# Your MySQL password
+        password="Kitkat@23",# Your MySQL password
         database="newdata" # The database you want to connect to
     )
     cursor = connection.cursor()
