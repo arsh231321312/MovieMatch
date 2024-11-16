@@ -1,30 +1,56 @@
-import React, { useState } from "react";
-import CryptoJS from "crypto-js";
-import { Link, Navigate } from "react-router-dom";
-import "./App.css";
-import eye_closed from "./pictures/eye_closed.png";
-import darkSun from "./pictures/sun.png";
-import sun from "./pictures/sunBright.png";
-import "./APictures.css";
-import { setGlobalState, useGlobalState } from "./GlobalVars";
-import { jwtDecode } from "jwt-decode";
+
+//Import necessary libraries and components
+import React, { useState } from "react"; // React library for building UI and useState for state management
+import CryptoJS from "crypto-js"; //Cryptographic operations
+import { Link, Navigate } from "react-router-dom"; // Navigation components for routing
+import "./App.css"; 
+import eye_closed from "./pictures/eye_closed.png"; 
+import darkSun from "./pictures/sun.png"; 
+import sun from "./pictures/sunBright.png"; 
+import "./APictures.css"; 
+import { setGlobalState, useGlobalState } from "./GlobalVars"; // Global state management functions
+import { jwtDecode } from "jwt-decode"; // Library to decode JSON web tokens
+
+
+//Date: 2024-11-15 changed made by: Katherine
+//adding bootstrap import
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+/**
+ * Function to set a browser cookie
+ * @param {string} name - Name of the cookie
+ * @param {string} value - Value to store in the cookie
+ * @param {number} maxAge - Expiration time in seconds
+ */
+
 export const setCookie = (name, value, maxAge) => {
   document.cookie = `${name}=${value}; Max-Age=${maxAge}; path=/;`;
 };
+
+/**
+ * Function to check if a valid auth cookie exists
+ * @returns {boolean} - True if the auth token exists and is valid
+ */
 export function isCookie(){
-  const token=getCookie('authToken');
-  if (token === null){
+  const token=getCookie('authToken');//Retrieve authentication token from cookies
+  if (token === null){ //If the token does not exist
     return false;
   }
-  const decodedToken = jwtDecode(token);
-  const username = decodedToken.username;
+  const decodedToken = jwtDecode(token);//Decode the token
+  const username = decodedToken.username;//Retrieve the username from the token
   const emailExists = decodedToken.emailExists;
-  setGlobalState('usesEmail',emailExists);
-  setGlobalState('account',username);
-  setGlobalState("authenticated",true);
+  setGlobalState('usesEmail', emailExists); // Update email status
+  setGlobalState('account', username); // Update username
+  setGlobalState("authenticated", true); // Set authentication state to true
   return true;
 }
-// Function to get a cookie
+
+/**
+ * Function to get a specific cookie by name
+ * @param {string} name - Name of the cookie
+ * @returns {string|null} - Value of the cookie or null if not found
+ */
 export const getCookie = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -36,14 +62,19 @@ export const getCookie = (name) => {
 export const removeCookie = (name) => {
   document.cookie = `${name}=; Max-Age=0; path=/;`;
 };
+
+/**
+ * Sign-up form component for user registration
+ */
 export function SignUpForm() {
+  //Variables to store user input and validation messages
   const [username, setUser] = useState("");
   const [password, setPass] = useState("");
   const [email, setEmail] = useState("");
   const [PasswordRepeat, setPassRepeat] = useState("");
-  const [hashedUser, setHashedUser] = useState("");
-  const [hashedPass, setHashedPass] = useState("");
-  const [hashedEmail, setHashedEmail] = useState("");
+  const [hashedUser, setHashedUser] = useState("");//Hashed username
+  const [hashedPass, setHashedPass] = useState("");//Hashed password
+  const [hashedEmail, setHashedEmail] = useState(""); //Hashed email
   const [errorMessageExistsEmail, setErrorMessageExistsEmail] = useState(false);
   const [errorMessageEmail, setErrorMessageEmail] = useState("");
   const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
@@ -52,13 +83,16 @@ export function SignUpForm() {
   const [errorMessagePass, setErrorMessagePass] = useState("");
   const [revealPassword, setRevealPassword] = useState(true);
   const [ErrorPassMismatch, setErrorPassMismatch] = useState(false);
-  const [PassMismatchMSG, setPassMismatchMSG] = useState("");
+  const [PassMismatchMSG, setPassMismatchMSG] = useState("");//Toggle to show password
   const [gotoMainPage, setGotoMainPage] = useState(false);
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [headerCol] = useGlobalState("headerColor");
   const [loginFail, setLoginFail] = useState(false);
   const [loginFailMSG, setLoginFailMSG] = useState("");
   
+  /**
+ * Toggle the visibility of the password field
+ */
   function eye_change() {
     if (revealPassword) {
       setRevealPassword(false);
@@ -66,11 +100,19 @@ export function SignUpForm() {
       setRevealPassword(true);
     }
   }
+
+  /**
+   * Handle form submission and validate user inputs
+   * @param {Event} e - Form submission event
+   */
   function handleSubmit(e) {
     let errorMessageExistsUserScope = false;
     let errorMessageExistsEmailScope = false;
     let passwordMismatchScope = false;
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
+    
+
+    // Validate username length is greater than 6 characters
     if (username.length < 6) {
       setErrorMessageUser("Username must be at least 6 characters long");
       setErrorMessageExistsUser(true);
@@ -78,11 +120,13 @@ export function SignUpForm() {
     } else {
       setErrorMessageExistsUser(false);
     }
-    if (email.length < 6) {
+
+    // Validate email format
+    if (email.length < 6) { //email is less than 6 characters
       setErrorMessageEmail("Email must be at least 6 characters long");
       setErrorMessageExistsEmail(true);
       errorMessageExistsEmailScope = true;
-    } else if (email.includes("@") === false) {
+    } else if (email.includes("@") === false) {//checks if @ sign is present
       setErrorMessageEmail("Email must contain an '@' symbol");
       setErrorMessageExistsEmail(true);
       errorMessageExistsEmailScope = true;
@@ -90,13 +134,17 @@ export function SignUpForm() {
       setErrorMessageExistsEmail(false);
     }
 
-    if (password === PasswordRepeat) {
+
+    //Checks if password are identical
+    if (password === PasswordRepeat) { //if passwords match
       setErrorPassMismatch(false);
     } else {
-      setPassMismatchMSG("Passwords do not match");
+      setPassMismatchMSG("Passwords do not match");//if passwords do not match
       setErrorPassMismatch(true);
       passwordMismatchScope = true;
     }
+
+    //If any validation errors exist, return
     if (
       errorMessageExistsUserScope ||
       errorMessageExistsEmailScope ||
@@ -104,7 +152,8 @@ export function SignUpForm() {
     ) {
       return;
     }
-
+    
+    //Prepare data for SQL Database
     const data = {
       username: hashedUser,
       password: hashedPass,
@@ -112,20 +161,21 @@ export function SignUpForm() {
       type: "register",
     };
 
+    // Make API call to backend
     fetch("http://localhost:5000/3000", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json",//Set content type to JSON
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "failure") {
+      .then((response) => response.json())//Parse response to JSON
+      .then((data) => {//Handle response data
+        if (data.status === "failure") {//If the response is a failure
           setGotoMainPage(false);
           setLoginFail(true);
           setLoginFailMSG(data.message);
-        } else {
+        } else {//If the response is a success hashes user and moves them to the main page
           setGlobalState("authenticated", true);
           setGlobalState("account", hashedUser);
           setLoginFail(false);
@@ -133,39 +183,52 @@ export function SignUpForm() {
           setCookie('authToken', data.token, 15);
         }
       })
-      .catch((error) => {
+      .catch((error) => {//Catch any errors
         console.error("Error:", error);
       });
   }
   
+
+  // Function to handle changes in the username input field
   function handleChangeUser(e) {
-    const user = e.target.value;
-    setUser(user);
-    setHashedUser(CryptoJS.SHA256(user).toString());
+    const user = e.target.value;//Grabs input value
+    setUser(user); //Sets the user state to the input value
+    setHashedUser(CryptoJS.SHA256(user).toString());//Hashes the username w/ SHA256
   }
+
+  // Check if the email contains "@" and update the error message state
   function handleChangeEmail(e) {
     const email = e.target.value;
     setEmail(email);
     setHashedEmail(CryptoJS.SHA256(email).toString());
-    if (email.includes("@") === true) {
+    if (email.includes("@") === true) { //If the email contains an @ symbol
       setErrorMessageExistsEmail(false);
     }
   }
+
+  // Function to handle invalid form submissions
   function handleChangePass(e) {
-    const pass = e.target.value;
-    setPass(pass);
-    setHashedPass(CryptoJS.SHA256(pass).toString());
+    const pass = e.target.value; //Get the input value
+    setPass(pass); //Set the password state to the input value
+    setHashedPass(CryptoJS.SHA256(pass).toString()); //Hash the password
+    
+    //Validate the password lenght
     if (pass.length < 8) {
       setErrorMessagePass("Password must be at least 8 characters long");
       setErrorMessageExistsPass(true);
-    } else if (pass.search(/(?=.*\W)(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).*/) < 0) {
+    } 
+    
+    //Validate the password format
+    else if (pass.search(/(?=.*\W)(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).*/) < 0) {
       setErrorMessagePass(
         "Password must contain at least one number, one uppercase letter, and one special character"
       );
-      setErrorMessageExistsPass(true);
+      setErrorMessageExistsPass(true);//has error
     } else {
-      setErrorMessageExistsPass(false);
+      setErrorMessageExistsPass(false);//no error
     }
+
+    //Checks if password are identical
     // if (password === PasswordRepeat) {
     //   setErrorPassMismatch(false);
     // }else {
@@ -187,12 +250,18 @@ export function SignUpForm() {
     // }
   }
 
+
+  // Function to handle invalid input and prevent form submission
   function handleInvalid(event) {
     event.preventDefault(); // Prevent the form from submitting
   }
 
+
+  // Main component return
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
+      
+      {/* Navigate to main page if the condition is met */}
       {gotoMainPage && <Navigate to="/mainPage" />}
       
       <Box>
@@ -201,14 +270,20 @@ export function SignUpForm() {
         </div>
         <div>
           <form className="form" onSubmit={handleSubmit}>
+            
+            {/* Username input component */}
             <UsernameInput
               username={username}
               handleChangeUser={handleChangeUser}
               handleInvalid={handleInvalid}
             />
+
+            {/* Display error message for username */}
             <div className="errorMSG">
               {errorMessageExistsUser && <span>{errorMessageUser}</span>}
             </div>
+
+            {/* Password input component */}
             <PasswordInput
               password={password}
               handleChangePass={handleChangePass}
@@ -217,9 +292,12 @@ export function SignUpForm() {
               revealPassword={revealPassword}
             />
 
+            {/* Display error message for password */}
             <div className="errorMSG">
               {errorMessageExistsPass && <span>{errorMessagePass}</span>}
             </div>
+
+            {/* Repeated password input component */}
             <PasswordInput
               password={PasswordRepeat}
               handleChangePass={handleChangePassRepeat}
@@ -228,20 +306,24 @@ export function SignUpForm() {
               revealPassword={revealPassword}
             />
 
+            {/* Display error message for password mismatch */}
             <div className="errorMSG">
               {ErrorPassMismatch && <span>{PassMismatchMSG}</span>}
             </div>
 
+            {/* Email input component */}
             <EmailInput
               email={email}
               handleChangeEmail={handleChangeEmail}
               handleSubmit={handleSubmit}
             />
 
+            {/* Display error message for password mismatch */}
             <div className="errorMSG">
               {errorMessageExistsEmail && <span>{errorMessageEmail}</span>}
             </div>
 
+            {/* Submit button */}
             <div>
               <button
                 type="submit"
@@ -252,10 +334,14 @@ export function SignUpForm() {
               </button>
             </div>
             <br />
+
+            {/* Display error message if login fails */}
             {loginFail && <span className="errorMSG">{loginFailMSG}</span>}
           </form>
         </div>
         <br />
+
+        {/* Section for users who already have an account */}
         <div className="divExistingACC">
           <span style={{ color: backgroundColor }}>Have an account?</span>
           <span>
@@ -276,21 +362,27 @@ export function SignUpForm() {
   );
 }
 
+
+// Component for the front page of the website
 export function FrontPage() {
+  // Use global state for theme and color settings
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [headerColor] = useGlobalState("headerColor");
   const [darkMode] = useGlobalState("DarkMode");
   const [wordColor] = useGlobalState("wordColor");
+
+  // Get the viewport dimensions
   const viewportHeight = window.innerHeight;
   const viewportWidth = window.innerWidth;
 
+  // Function to toggle dark mode
   function dark_mode() {
-    if (darkMode) {
+    if (darkMode) {// If dark mode is enabled, disable it and update global state
       setGlobalState("DarkMode", false);
       setGlobalState("headerColor", "#708090");
       setGlobalState("wordColor", "black");
       setGlobalState("backgroundColor", "#f0eee9");
-    } else {
+    } else { //enables dark mode
       setGlobalState("DarkMode", true);
       setGlobalState("headerColor", "#07000f");
       setGlobalState("wordColor", "white");
@@ -299,14 +391,19 @@ export function FrontPage() {
   }
   return (
     <div>
+      {/* Main page container with dynamic background color */}
       <div className="page" style={{ backgroundColor: backgroundColor }}>
+        
+        {/* Header section */}
         <header className="header" style={{ backgroundColor: headerColor }}>
           <div>
+            {/* Website title with dynamic text color */}
             <h1 className="frontPageTitle" style={{ color: wordColor }}>
-              ARSH'S WEBSITE!!!
+              Movie Match
             </h1>
           </div>
 
+          {/* Header options section */}
           <div
             className="headerOptions"
             style={{ display: "flex", justifyContent: "flex-end" }}
@@ -318,6 +415,7 @@ export function FrontPage() {
                 fontSize: "2.377vh",
               }}
             >
+              {/* Register link with dynamic text color */}
               <Link
                 to="/Register"
                 style={{ color: wordColor, textDecoration: "none" }}
@@ -332,6 +430,7 @@ export function FrontPage() {
                   fontSize: "2.377vh",
                 }}
               >
+                {/*Link to the login page with dynamic text color */}
                 <Link
                   to="/Login"
                   style={{ color: wordColor, textDecoration: "none" }}
@@ -341,6 +440,8 @@ export function FrontPage() {
               </span>
             </div>
             <div>
+
+              {/* Dark mode toggle button */}
               {darkMode && (
                 <img
                   src={darkSun}
@@ -349,6 +450,8 @@ export function FrontPage() {
                   onClick={dark_mode}
                 ></img>
               )}
+
+              {/* Light mode toggle button */}
               {!darkMode && (
                 <img
                   src={sun}
@@ -357,9 +460,12 @@ export function FrontPage() {
                   onClick={dark_mode}
                 ></img>
               )}
+
             </div>
           </div>
         </header>
+
+        {/* TODO change this from inline to css */}
         <h3
           style={{
             color: "#f0eee9",
@@ -379,6 +485,8 @@ export function FrontPage() {
     </div>
   );
 }
+
+// Component for the mobile version of the front page
 export function FrontPageMobile() {
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [headerColor] = useGlobalState("headerColor");
@@ -387,6 +495,8 @@ export function FrontPageMobile() {
   const viewportHeight = window.innerHeight;
   const viewportWidth = window.innerWidth;
 
+
+  // Function to toggle dark mode
   function dark_mode() {
     if (darkMode) {
       setGlobalState("DarkMode", false);
@@ -400,10 +510,14 @@ export function FrontPageMobile() {
       setGlobalState("backgroundColor", "#1f2833");
     }
   }
+
+  //Main functionality to render the page
   return (
     <div>
       <div className="page" style={{ backgroundColor: backgroundColor }}>
         <header className="header" style={{ backgroundColor: headerColor }}>
+          
+          {/* Register link positioned with margin and padding */}
           <span
             style={{
               marginRight: "1.1718vw",
@@ -420,15 +534,19 @@ export function FrontPageMobile() {
             </Link>
           </span>
           <div>
+
+            {/* Main title with dynamic text color */}
             <h1 className="frontPageTitle" style={{ color: wordColor }}>
-              ARSH'S WEBSITE!!!
+              Movie Match
             </h1>
           </div>
 
+            {/* Options in the header */}
           <div
             className="headerOptions"
             style={{ display: "flex", justifyContent: "flex-end" }}
           >
+            {/* Sign in link with dynamic text color */}
             <div style={{ paddingLeft: "15px" }}>
               <span
                 style={{
@@ -444,6 +562,8 @@ export function FrontPageMobile() {
                 </Link>
               </span>
             </div>
+
+            {/* Dark mode toggle button */}
             <div style={{ paddingLeft: "5px" }}>
               {darkMode && (
                 <img
@@ -466,6 +586,8 @@ export function FrontPageMobile() {
             </div>
           </div>
         </header>
+
+        {/*Centered message below the header */}
         <h3
           style={{
             color: "#f0eee9",
@@ -478,6 +600,8 @@ export function FrontPageMobile() {
         >
           WOOOOOO!!
         </h3>
+
+        {/* Display viewport dimensions */}
         <h3>
           {viewportHeight} x {viewportWidth}
         </h3>
@@ -485,6 +609,8 @@ export function FrontPageMobile() {
     </div>
   );
 }
+
+// Sign-in form component
 export function SignInForm() {
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [wordColor] = useGlobalState("wordColor");
@@ -504,18 +630,20 @@ export function SignInForm() {
   
   
   function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault(); //prevent default form submission behavior
 
+    //checks if the username is at least 6 characters long
     if (username.length < 6) {
       setErrorMessageUser("Username must be at least 6 characters long");
       setErrorMessageExistsUser(true);
     } else {
       setErrorMessageExistsUser(false);
     }
-    if (errorMessageExistsUser) {
+    if (errorMessageExistsUser) {//Stop if username validation fails
       return;
     }
 
+    //Prepare data for submission to SQL database
     const data = {
       username: hashedUser,
       password: hashedPass,
@@ -523,29 +651,34 @@ export function SignInForm() {
       type: "signin",
     };
 
+    //Send Post request to backend
     fetch("http://localhost:5000/3000", {
-      method: "POST",
+      method: "POST", //HTTP method
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data), //Convert data to JSON
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "failure") {
+          //If the response is a failure, display the error message
           setGotoMainPage(false);
           setLoginFailMSG(data.message);
           setLoginFail(true);
         } else {
+          //login success
           setGlobalState("authenticated", true);
-          setGlobalState("usesEmail", emailExists);
+          setGlobalState("usesEmail", emailExists); //tracks if email already exists
           setGlobalState("account", hashedUser);
-          setCookie('authToken', data.token, 15);
+          setCookie('authToken', data.token, 15); //Set the authentication token in cookies
           setLoginFail(false);
-          setGotoMainPage(true);
+          setGotoMainPage(true); //Redirect to the main page
           
         }
       })
+
+      //toggles password visibilty through the eye icon
       .catch((error) => {
         console.error("Error:", error);
       });
@@ -558,29 +691,36 @@ export function SignInForm() {
     }
   }
 
+  //Function to handle changes in the username input field
   function handleChangeUser(e) {
     const user = e.target.value;
-    setUsername(user);
-    setHashedUser(CryptoJS.SHA256(user).toString());
+    setUsername(user); //Update the username state
+    setHashedUser(CryptoJS.SHA256(user).toString()); //Hash the username
+    
+    //checks username length
     if (username.length < 6) {
       setErrorMessageUser("Username must be at least 6 characters long");
       setErrorMessageExistsUser(true);
     } else {
       setErrorMessageExistsUser(false);
     }
-    if (username.includes("@") === true) {
-      setEmailExists(true);
-    } else {
+    if (username.includes("@") === true) {//checks if the username contains an @ symbol
+      setEmailExists(true); //If it does, set emailExists to true
+    } else { //If it does not, set emailExists to false
       setEmailExists(false);
     }
   }
   function handleInvalid(event) {
     event.preventDefault(); // Prevent the form from submitting
   }
+
+  //Function to handle changes in the password input field
   function handleChangePass(e) {
     const pass = e.target.value;
     setPassword(pass);
     setHashedPass(CryptoJS.SHA256(pass).toString());
+
+    //checks password length
     if (pass.length < 8) {
       setErrorMessagePass("Password must be at least 8 characters long");
       setErrorMessageExistsPass(true);
@@ -594,27 +734,42 @@ export function SignInForm() {
     }
   }
 
+  //Render the sign-in form 
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
+      
+      {/* Redirect the user to the main page if authentication cookies exist or login succeeds */}
+    {isCookie() && <Navigate to="/mainPage" />}
+
       {isCookie() && <Navigate to="/mainPage"/>}
       {gotoMainPage && <Navigate to="/mainPage" />}
       
       <Box>
         <div>
+           {/* Title of the page */}
           <h1 style={{ position: "relative", color: backgroundColor }}>
             {" "}
             Sign In
           </h1>
+
+
         </div>
+        {/* Form submission handler */}
         <form className="form" onSubmit={handleSubmit}>
+
+          {/* Username input component */}
           <UsernameInput
             username={username}
             handleChangeUser={handleChangeUser}
             handleInvalid={handleInvalid}
           />
+
           <div className="errorMSG">
+            {/* Display username error messages if validation fails */}
             {errorMessageExistsUser && <span>{errorMessageUser}</span>}
           </div>
+
+          {/* Password input component */}
           <PasswordInput
             password={password}
             handleChangePass={handleChangePass}
@@ -625,6 +780,8 @@ export function SignInForm() {
           <div className="errorMSG">
             {errorMessageExistsPass && <span>{errorMessagePass}</span>}
           </div>
+
+          {/* Submit button */}
           <div>
             <button
               type="submit"
@@ -634,6 +791,8 @@ export function SignInForm() {
               Submit
             </button>
           </div>
+
+          {/* Display error message if login fails */}
           <div
             style={{
               width: "303px",
@@ -682,6 +841,9 @@ export function SignInForm() {
     </div>
   );
 }
+
+
+// Component for the main page
 const Box = ({ children, width, height, backgroundColor }) => {
   return (
     <div className="box" style={{ width, height, backgroundColor }}>
@@ -690,6 +852,8 @@ const Box = ({ children, width, height, backgroundColor }) => {
   );
 };
 
+
+// Component for Reset Password Form
 export function ResetPasswordForm() {
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [headerCol] = useGlobalState("headerColor");
@@ -711,6 +875,8 @@ export function ResetPasswordForm() {
   const [resetPassFailMSG, setResetPassFailMSG] = useState("");
 
   const [gotoLoginPage, setGotoLoginPage] = useState(false);
+
+  //Function to toggle password visibility
   function eye_change() {
     if (revealPassword) {
       setRevealPassword(false);
@@ -718,28 +884,33 @@ export function ResetPasswordForm() {
       setRevealPassword(true);
     }
   }
+
+  //Function to handle form submission
   function handleSubmit(e) {
     let errorMessageExistsUserScope = false;
     let passwordMismatchScope = false;
     let emailExists = false;
     e.preventDefault();
+
+    //Validate username length
     if (username.length < 6) {
       setErrorMessageUser("Username must be at least 6 characters long");
       setErrorMessageExistsUser(true);
       errorMessageExistsUserScope = true;
-    } else {
+    } else { //If the username is valid, set the error message to false
       setErrorMessageExistsUser(false);
       errorMessageExistsUserScope = false;
     }
-    if (username.includes("@") === true) {
+    if (username.includes("@") === true) { //If the username contains an @ symbol
       emailExists = true;
     } else {
       emailExists = false;
     }
 
+    //Checks if passwords are identical
     if (password === PasswordRepeat) {
       setErrorPassMismatch(false);
-    } else {
+    } else { //If the passwords do not match, set the error message
       setPassMismatchMSG("Passwords do not match");
       setErrorPassMismatch(true);
       passwordMismatchScope = true;
@@ -747,6 +918,8 @@ export function ResetPasswordForm() {
     if (errorMessageExistsUserScope || passwordMismatchScope) {
       return;
     }
+
+    //Prepare data for submission to SQL database
     const data = {
       username: hashedUser,
       password: hashedPass,
@@ -754,16 +927,17 @@ export function ResetPasswordForm() {
       type: "changePassword",
     };
 
+    //Send Post request to backend
     fetch("http://localhost:5000/3000", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", //Set content type to JSON
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => response.json()) // Parse response to JSON
       .then((data) => {
-        if (data.status === "failure") {
+        if (data.status === "failure") { //If the response is a failure, display the error message
           setResetPassFail(true);
           setResetPassFailMSG(data.message);
         } else {
@@ -774,24 +948,33 @@ export function ResetPasswordForm() {
         console.error("Error:", error);
       });
   }
+
+  //Function to handle changes in the username input field
   function handleChangeUser(e) {
     const user = e.target.value;
     setUsername(user);
-    setHashedUser(CryptoJS.SHA256(user).toString());
-    if (username.length < 6) {
+    setHashedUser(CryptoJS.SHA256(user).toString()); // Hash the username
+    
+    //Validate the username length
+    if (username.length < 6) { // If the username is less than 6 characters, set the error message
       setErrorMessageUser("Username must be at least 6 characters long");
       setErrorMessageExistsUser(true);
-    } else {
+    } else { //If the username is valid, set the error message to false
       setErrorMessageExistsUser(false);
     }
   }
-  function handleInvalid(e) {
+
+  function handleInvalid(e) { //Function to handle invalid form submissions
     e.preventDefault();
   }
+
+  //Function to handle changes in the password input field
   function handleChangePass(e) {
     const pass = e.target.value;
     setPassword(pass);
     setHashedPass(CryptoJS.SHA256(pass).toString());
+
+    //Validate the password length
     if (pass.length < 8) {
       setErrorMessagePass("Password must be at least 8 characters long");
       setErrorMessageExistsPass(true);
@@ -804,10 +987,14 @@ export function ResetPasswordForm() {
       setErrorMessageExistsPass(false);
     }
   }
+
+  //Function to handle changes in the repeated password input field
   function handleChangePassRepeat(e) {
     const pass = e.target.value;
     setPassRepeat(pass);
     setHashedPass(CryptoJS.SHA256(pass).toString());
+
+    //Checks if the passwords are identical
     if (password === PasswordRepeat) {
       setErrorPassMismatch(false);
     } else {
@@ -815,8 +1002,12 @@ export function ResetPasswordForm() {
       setErrorPassMismatch(true);
     }
   }
+
+  //Main component return
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
+
+      {/* Redirect to the login page if the condition is met */}
       {gotoLoginPage && <Navigate to="/Login" />}
       <Box>
         <div>
@@ -824,15 +1015,20 @@ export function ResetPasswordForm() {
             Change Password
           </h1>
         </div>
+
+        {/* Form submission handler */}
         <form className="form" onSubmit={handleSubmit}>
           <UsernameInput
             username={username}
             handleChangeUser={handleChangeUser}
             handleInvalid={handleInvalid}
           />
+          {/* Display error message for username */}
           <div className="errorMSG">
             {errorMessageExistsUser && <span>{errorMessageUser}</span>}
           </div>
+
+          {/* Password input component */}
           <PasswordInput
             password={password}
             handleChangePass={handleChangePass}
@@ -840,9 +1036,13 @@ export function ResetPasswordForm() {
             eye_change={eye_change}
             revealPassword={revealPassword}
           />
+
+          {/* Display error message for password */}
           <div className="errorMSG">
             {errorMessageExistsPass && <span>{errorMessagePass}</span>}
           </div>
+
+          {/* Repeated password input component */}
           <PasswordInput
             password={PasswordRepeat}
             handleChangePass={handleChangePassRepeat}
@@ -854,6 +1054,7 @@ export function ResetPasswordForm() {
             {errorPassMismatch && <span>{PassMismatchMSG}</span>}
           </div>
           <div>
+            {/* Submit button */}
             <button
               type="submit"
               className="submitButton"
@@ -862,6 +1063,8 @@ export function ResetPasswordForm() {
               Submit
             </button>
           </div>
+
+          {/* Display error message if password reset fails */}
           <div>
             {resetPassFail && (
               <span className="errorMSG">{resetPassFailMSG}</span>
@@ -881,7 +1084,9 @@ export function ResetPasswordForm() {
   );
 }
 
+// Component for the main page
 function UsernameInput({ username, handleChangeUser, handleInvalid }) {
+  //Function to handle changes in the username input field
   return (
     <div className="divInputBox">
       <input
@@ -902,6 +1107,7 @@ function UsernameInput({ username, handleChangeUser, handleInvalid }) {
   );
 }
 
+// Component for the password input field
 function PasswordInput({
   password,
   handleChangePass,
@@ -910,6 +1116,7 @@ function PasswordInput({
   revealPassword,
 }) {
   return (
+    //Function to handle changes in the password input field
     <div className="divInputBox" style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
       <input
         type={revealPassword && "password"}
@@ -920,11 +1127,13 @@ function PasswordInput({
         pattern="(?=.*\W)(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).*"
         maxLength={40}
         minLength={8}
-        placeholder={"Password123!"}
+        placeholder={"Password123!"} 
         onInput={handleChangePass}
         onInvalid={handleInvalid}
         required
       />
+
+      {/* Password visibility toggle */}
       {revealPassword && (
         <img
           src={eye_closed}
@@ -934,6 +1143,9 @@ function PasswordInput({
           style={{position:'absolute'}}
         ></img>
       )}
+
+
+      {/* Password visibility toggle */}
       {!revealPassword && (
         <img
           src={
@@ -948,6 +1160,8 @@ function PasswordInput({
     </div>
   );
 }
+
+// Component for the email input field
 function EmailInput({ email, handleChangeEmail, handleSubmit }) {
   return (
     <div className="divInputBox">
@@ -969,6 +1183,8 @@ function EmailInput({ email, handleChangeEmail, handleSubmit }) {
   );
 }
 
+
+// Component for the main page
 export function MainPage() {
   const isMobile = window.innerWidth <= 600;
   const [backgroundColor] = useGlobalState("backgroundColor");
@@ -985,6 +1201,7 @@ export function MainPage() {
   const [em] = useGlobalState("usesEmail");
   const [result, setResult] = useState([]);
   
+  // Function to display previous movie suggestions
   function MovieList({ result, wordColor }) {
     const [emailExists] = useGlobalState('usesEmail')
     const [acc] = useGlobalState('account')
@@ -1015,6 +1232,7 @@ export function MainPage() {
         });
     }
   
+    // Function to display previous movie suggestions
     return (
       <div>
         {result.map((item, index) => (
@@ -1044,6 +1262,7 @@ export function MainPage() {
     );
   }
 
+  // Function to handle the search bar submission
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -1053,6 +1272,8 @@ export function MainPage() {
       emailExists: em,
       type: "LetterUser",
     };
+
+    // Send Post request to backend
     fetch("http://localhost:5000/3000", {
       method: "POST",
       headers: {
@@ -1060,11 +1281,13 @@ export function MainPage() {
       },
       body: JSON.stringify(data),
     })
+
+    // Parse response to JSON
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === "failure") {
+        if (data.status === "failure") { // If the response is a failure, display the error message
           alert(data.message);
-        } else {
+        } else { // If the response is a success, display the movie data
           setDivSearchBarClass("changeSeachBox");
           setSearchBarClass("changeSearchBar");
           setDataset(data.data);
@@ -1072,15 +1295,20 @@ export function MainPage() {
           setResult(data.result);
         }
       })
+
+      // Catch any errors
       .catch((error) => {
         console.error("Error:", error);
       });
 
     setLetterUser("");
   }
+
+  // Function to display previous movie suggestions
   function showPrevMovies() {
     setPreviousMoviesButton(!previousMoviesButton);
   }
+
   return (
     <div>
       <div className="page" style={{ backgroundColor: backgroundColor }}>
@@ -1091,7 +1319,7 @@ export function MainPage() {
             display: "flex",
             alignItems: "center",
           }}
-        >
+        > 
           <div>
             <h1 style={{ color: wordColor, width: "75vw" }}>
               LetterBoxd WatchList
@@ -1100,6 +1328,7 @@ export function MainPage() {
         </header>
         <div>
           
+          {/* Display previous movie suggestions */}
         </div>
         <div
           style={{
@@ -1110,6 +1339,7 @@ export function MainPage() {
             width: "100%",
           }}
         >
+          {/* Display previous movie suggestions */}
           {showUserData && (
             <div style={{ marginLeft: "3vw" }}>
               <button
@@ -1153,6 +1383,7 @@ export function MainPage() {
           </form>
         </div>
 
+
         <div style={{ display: "flex", height: "100%" }}>
           {previousMoviesButton && (
             <div
@@ -1192,7 +1423,7 @@ export function MainPage() {
             <div
               style={{ width: "100%", maxWidth: "100%", textAlign: "center" }}
             >
-
+              {/* Display the movie data */}
               {showUserData && (
                 <div style={{ overflowY: "auto", justifyContent:'center',alignItems:'center',width:'100vw' }}>
                   <div
@@ -1228,6 +1459,8 @@ export function MainPage() {
   );
 }
 
+
+// Component for the video player
 function VideoPlayer({ src }) {
   const isMobile = window.innerWidth <= 600;
 const iframeWidth = isMobile ? "340px" : "560px";
@@ -1242,7 +1475,7 @@ const iframeHeight = isMobile ? "240px" : "315px";
   allowFullScreen
 ></iframe>
   return (
-    <div className="video-container">
+    <div className="video-container pt-5">
       <iframe
         width={iframeWidth}
         height={iframeHeight}
@@ -1256,6 +1489,7 @@ const iframeHeight = isMobile ? "240px" : "315px";
   );
 }
 
+// Component for the external link
 function ExternalLink({ url }) {
   return (
     <div>
