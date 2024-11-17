@@ -1,9 +1,12 @@
-
-import { SignUpForm, SignInForm, FrontPage, ResetPasswordForm,MainPage, FrontPageMobile} from './AFunctions';
 import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-dom';
 import { useGlobalState } from './GlobalVars';
 import { useState } from 'react';
-
+import {SignInForm} from './JSFUNCTIONS/Login';
+import { SignUpForm } from './JSFUNCTIONS/Register';
+import { FrontPage } from './JSFUNCTIONS/FrontPage';
+import { FrontPageMobile } from './JSFUNCTIONS/FrontPageMobile';
+import { ResetPasswordForm } from './JSFUNCTIONS/ResetPassword';
+import { MainPage } from './JSFUNCTIONS/MainPage';
 const ProtectedRoute = ({ element: Component, ...rest }) => {
   const [isAuthenticated]=useGlobalState('authenticated')
   return isAuthenticated ? (
