@@ -11,6 +11,8 @@ import {setCookie } from "./Cookie";
 import {PasswordInput,UsernameInput,EmailInput,} from './InputFunctions'
 
 
+
+
 export function SignUpForm() {
     //Variables to store user input and validation messages
     const [username, setUser] = useState("");
