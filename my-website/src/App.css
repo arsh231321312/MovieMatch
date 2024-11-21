@@ -22,6 +22,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+
 }
 
 .App-link {
@@ -39,18 +40,20 @@
 
 .box {
   width: 400px;
-  height: 500px;
+  height: 400px;
   background-color: #c5c6c7; /* You can change the color as needed */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 10px;
 }
 .page {
   text-align: center;
   margin: auto;
   min-height: 100vh;
   width: 100vw;
+  background-color: #1f2532;
 }
 .divInputBox{
   position: relative;
@@ -61,7 +64,12 @@
     width: 80%;
     margin-bottom: 5px; 
     height: 25px;
+    border-radius: 5px;
+    border: none;
+
 }
+
+
 
 .form{
   position: relative;
@@ -70,7 +78,9 @@
   font-size: 16px;
   margin-right: 0px;
   border-radius: 4px;
+  
 }
+
 .errorMSG{
   color: red; 
   width: 315px;
@@ -86,6 +96,7 @@
   width: 303px;
   color: white;
   border: '1px solid #03bafc';
+  border-radius: 5px;
 }
 
 .divExistingACC{
@@ -204,10 +215,12 @@
     padding: "5px";
     width: 250px;
     height: 375px;
+    border-radius: 10px;
   }
 }
 @media (min-width:599px){
   .poster{
     padding: "5px";
+    border-radius: 10px;
   }
 }

@@ -1,11 +1,11 @@
 .password_eye {
     /*background-image: url('https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-eye-512.png'); */
     background-size: 23px 23px; /* Change the size to 20px by 20px */
-    width: 1.8vw; /* Set the width of the element */
-    height: 1.8vw; /* Set the height of the element */
+    width: 6%; /* Set the width of the element */
+    height: 60%; /* Set the height of the element */
     position:'absolute';
     /* top: 50%; */
-    left: 84%;
+    left: 82.5%;
     cursor: pointer;
     /* transform: translate(10.5469vw, -5.07131vh);  */
     
