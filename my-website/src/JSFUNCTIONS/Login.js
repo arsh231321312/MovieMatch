@@ -31,11 +31,11 @@ export function SignInForm() {
     const [errorMessageExistsPass, setErrorMessageExistsPass] = useState(false);
     const [errorMessagePass, setErrorMessagePass] = useState("");
     const [revealPassword, setRevealPassword] = useState(true);
-    const [emailExists, setEmailExists] = useState(false);
+    // const [emailExists, setEmailExists] = useState(false);
     const [loginFail, setLoginFail] = useState(false);
     const [loginFailMSG, setLoginFailMSG] = useState("");
     const [gotoMainPage, setGotoMainPage] = useState(false);
-    function submit(hash){
+    function submit(hash,emailExists){
       //Prepare data for submission to SQL database
       const data = {
         username: hashedUser,
@@ -77,6 +77,7 @@ export function SignInForm() {
     }
     function handleSubmit(e) {
       let gotSalt=false;
+      let emailExists=false;
       e.preventDefault(); //prevent default form submission behavior
   
       //checks if the username is at least 6 characters long
@@ -89,7 +90,11 @@ export function SignInForm() {
       if (errorMessageExistsUser) {//Stop if username validation fails
         return;
       }
-      
+      if (username.includes("@") === true) {//checks if the username contains an @ symbol
+        emailExists=true; //If it does, set emailExists to true
+      } else { //If it does not, set emailExists to false
+        emailExists=false;
+      }
       const dataSalt={
         username: hashedUser,
         email: emailExists,
@@ -117,7 +122,7 @@ export function SignInForm() {
             setGlobalState("account", hashedUser);
             const p=data.salt+password;
             let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
-            submit(hash);
+            submit(hash,emailExists);
           }
         })
   
@@ -145,17 +150,17 @@ export function SignInForm() {
       setHashedUser(CryptoJS.SHA256(user).toString()); //Hash the username
       
       //checks username length
-      if (username.length < 6) {
-        setErrorMessageUser("Username must be at least 6 characters long");
-        setErrorMessageExistsUser(true);
-      } else {
-        setErrorMessageExistsUser(false);
-      }
-      if (username.includes("@") === true) {//checks if the username contains an @ symbol
-        setEmailExists(true); //If it does, set emailExists to true
-      } else { //If it does not, set emailExists to false
-        setEmailExists(false);
-      }
+      // if (username.length < 6) {
+      //   setErrorMessageUser("Username must be at least 6 characters long");
+      //   setErrorMessageExistsUser(true);
+      // } else {
+      //   setErrorMessageExistsUser(false);
+      // }
+      // if (username.includes("@") === true) {//checks if the username contains an @ symbol
+      //   setEmailExists(true); //If it does, set emailExists to true
+      // } else { //If it does not, set emailExists to false
+      //   setEmailExists(false);
+      // }
     }
     function handleInvalid(event) {
       event.preventDefault(); // Prevent the form from submitting
