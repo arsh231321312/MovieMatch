@@ -94,7 +94,7 @@ export function EmailInput({ email, handleChangeEmail, handleSubmit }) {
           value={email}
           size="40"
           height="40px"
-          placeholder={"Example@gmail.com"}
+          placeholder={" Example@gmail.com"}
           onInput={handleChangeEmail}
           maxLength={40}
           minLength={6}
