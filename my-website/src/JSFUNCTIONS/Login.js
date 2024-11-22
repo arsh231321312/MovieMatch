@@ -35,9 +35,48 @@ export function SignInForm() {
     const [loginFail, setLoginFail] = useState(false);
     const [loginFailMSG, setLoginFailMSG] = useState("");
     const [gotoMainPage, setGotoMainPage] = useState(false);
+    function submit(hash){
+      //Prepare data for submission to SQL database
+      const data = {
+        username: hashedUser,
+        password: hash,
+        email: emailExists,
+        type: "signin",
+      };
+      //Send Post request to backend
+      fetch("http://localhost:5000/3000", {
+        method: "POST", //HTTP method
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), //Convert data to JSON
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "failure") {
+            //If the response is a failure, display the error message
+            setGotoMainPage(false);
+            setLoginFailMSG(data.message);
+            setLoginFail(true);
+          } else {
+            //login success
+            setGlobalState("authenticated", true);
+            setGlobalState("usesEmail", emailExists); //tracks if email already exists
+            setGlobalState("account", hashedUser);
+            setCookie('authToken', data.token, 15); //Set the authentication token in cookies
+            setLoginFail(false);
+            setGotoMainPage(true); //Redirect to the main page
+            
+          }
+        })
+  
+        //toggles password visibilty through the eye icon
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
     function handleSubmit(e) {
       let gotSalt=false;
-      let hashpass='';
       e.preventDefault(); //prevent default form submission behavior
   
       //checks if the username is at least 6 characters long
@@ -71,13 +110,14 @@ export function SignInForm() {
             setGotoMainPage(false);
             setLoginFailMSG(data.message);
             setLoginFail(true);
+            alert("failed")
           } else {
             //login success
             setGlobalState("usesEmail", emailExists); //tracks if email already exists
             setGlobalState("account", hashedUser);
             const p=data.salt+password;
-            hashpass=CryptoJS.SHA256(p).toString(); //Hash the username
-            gotSalt=true;
+            let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
+            submit(hash);
           }
         })
   
@@ -87,49 +127,8 @@ export function SignInForm() {
         });
 
 
-
-      if (gotSalt === false){
-        return;
-      }
-      //Prepare data for submission to SQL database
-      const data = {
-        username: hashedUser,
-        password: hashpass,
-        email: emailExists,
-        type: "signin",
-      };
       
-      //Send Post request to backend
-      fetch("http://localhost:5000/3000", {
-        method: "POST", //HTTP method
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data), //Convert data to JSON
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "failure") {
-            //If the response is a failure, display the error message
-            setGotoMainPage(false);
-            setLoginFailMSG(data.message);
-            setLoginFail(true);
-          } else {
-            //login success
-            setGlobalState("authenticated", true);
-            setGlobalState("usesEmail", emailExists); //tracks if email already exists
-            setGlobalState("account", hashedUser);
-            setCookie('authToken', data.token, 15*12); //Set the authentication token in cookies
-            setLoginFail(false);
-            setGotoMainPage(true); //Redirect to the main page
-            
-          }
-        })
-  
-        //toggles password visibilty through the eye icon
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      
     }
     function eye_change() {
       if (revealPassword) {
