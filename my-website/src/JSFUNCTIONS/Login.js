@@ -31,74 +31,22 @@ export function SignInForm() {
     const [errorMessageExistsPass, setErrorMessageExistsPass] = useState(false);
     const [errorMessagePass, setErrorMessagePass] = useState("");
     const [revealPassword, setRevealPassword] = useState(true);
-    const [emailExists, setEmailExists] = useState(false);
+    // const [emailExists, setEmailExists] = useState(false);
     const [loginFail, setLoginFail] = useState(false);
     const [loginFailMSG, setLoginFailMSG] = useState("");
     const [gotoMainPage, setGotoMainPage] = useState(false);
-    function handleSubmit(e) {
-      let gotSalt=false;
-      let hashpass='';
-      e.preventDefault(); //prevent default form submission behavior
-  
-      //checks if the username is at least 6 characters long
-      if (username.length < 6) {
-        setErrorMessageUser("Username must be at least 6 characters long");
-        setErrorMessageExistsUser(true);
-      } else {
-        setErrorMessageExistsUser(false);
-      }
-      if (errorMessageExistsUser) {//Stop if username validation fails
-        return;
-      }
-      
-      const dataSalt={
-        username: hashedUser,
-        email: emailExists,
-        type: "salt",
-      };
-      //Send Post request to backend
-      fetch("http://localhost:5000/3000", {
-        method: "POST", //HTTP method
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataSalt), //Convert data to JSON
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "failure") {
-            //If the response is a failure, display the error message
-            setGotoMainPage(false);
-            setLoginFailMSG(data.message);
-            setLoginFail(true);
-          } else {
-            //login success
-            setGlobalState("usesEmail", emailExists); //tracks if email already exists
-            setGlobalState("account", hashedUser);
-            const p=data.salt+password;
-            hashpass=CryptoJS.SHA256(p).toString(); //Hash the username
-            gotSalt=true;
-          }
-        })
-  
-        //toggles password visibilty through the eye icon
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-
-
-
-      if (gotSalt === false){
-        return;
-      }
+<<<<<<< HEAD
+    function submit(hash){
+=======
+    function submit(hash,emailExists){
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
       //Prepare data for submission to SQL database
       const data = {
         username: hashedUser,
-        password: hashpass,
+        password: hash,
         email: emailExists,
         type: "signin",
       };
-      
       //Send Post request to backend
       fetch("http://localhost:5000/3000", {
         method: "POST", //HTTP method
@@ -119,7 +67,7 @@ export function SignInForm() {
             setGlobalState("authenticated", true);
             setGlobalState("usesEmail", emailExists); //tracks if email already exists
             setGlobalState("account", hashedUser);
-            setCookie('authToken', data.token, 15*12); //Set the authentication token in cookies
+            setCookie('authToken', data.token, 15); //Set the authentication token in cookies
             setLoginFail(false);
             setGotoMainPage(true); //Redirect to the main page
             
@@ -130,6 +78,77 @@ export function SignInForm() {
         .catch((error) => {
           console.error("Error:", error);
         });
+    }
+    function handleSubmit(e) {
+      let gotSalt=false;
+<<<<<<< HEAD
+=======
+      let emailExists=false;
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
+      e.preventDefault(); //prevent default form submission behavior
+  
+      //checks if the username is at least 6 characters long
+      if (username.length < 6) {
+        setErrorMessageUser("Username must be at least 6 characters long");
+        setErrorMessageExistsUser(true);
+      } else {
+        setErrorMessageExistsUser(false);
+      }
+      if (errorMessageExistsUser) {//Stop if username validation fails
+        return;
+      }
+<<<<<<< HEAD
+      
+=======
+      if (username.includes("@") === true) {//checks if the username contains an @ symbol
+        emailExists=true; //If it does, set emailExists to true
+      } else { //If it does not, set emailExists to false
+        emailExists=false;
+      }
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
+      const dataSalt={
+        username: hashedUser,
+        email: emailExists,
+        type: "salt",
+      };
+      //Send Post request to backend
+      fetch("http://localhost:5000/3000", {
+        method: "POST", //HTTP method
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataSalt), //Convert data to JSON
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "failure") {
+            //If the response is a failure, display the error message
+            setGotoMainPage(false);
+            setLoginFailMSG(data.message);
+            setLoginFail(true);
+            alert("failed")
+          } else {
+            //login success
+            setGlobalState("usesEmail", emailExists); //tracks if email already exists
+            setGlobalState("account", hashedUser);
+            const p=data.salt+password;
+            let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
+<<<<<<< HEAD
+            submit(hash);
+=======
+            submit(hash,emailExists);
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
+          }
+        })
+  
+        //toggles password visibilty through the eye icon
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+
+      
+      
     }
     function eye_change() {
       if (revealPassword) {
@@ -146,17 +165,17 @@ export function SignInForm() {
       setHashedUser(CryptoJS.SHA256(user).toString()); //Hash the username
       
       //checks username length
-      if (username.length < 6) {
-        setErrorMessageUser("Username must be at least 6 characters long");
-        setErrorMessageExistsUser(true);
-      } else {
-        setErrorMessageExistsUser(false);
-      }
-      if (username.includes("@") === true) {//checks if the username contains an @ symbol
-        setEmailExists(true); //If it does, set emailExists to true
-      } else { //If it does not, set emailExists to false
-        setEmailExists(false);
-      }
+      // if (username.length < 6) {
+      //   setErrorMessageUser("Username must be at least 6 characters long");
+      //   setErrorMessageExistsUser(true);
+      // } else {
+      //   setErrorMessageExistsUser(false);
+      // }
+      // if (username.includes("@") === true) {//checks if the username contains an @ symbol
+      //   setEmailExists(true); //If it does, set emailExists to true
+      // } else { //If it does not, set emailExists to false
+      //   setEmailExists(false);
+      // }
     }
     function handleInvalid(event) {
       event.preventDefault(); // Prevent the form from submitting

@@ -8,6 +8,7 @@ import { useGlobalState } from "../GlobalVars"; // Global state management funct
 
 // Component for the main page
 export function MainPage() {
+<<<<<<< HEAD
   const isMobile = window.innerWidth <= 600;
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [headerCol] = useGlobalState("headerColor");
@@ -26,6 +27,19 @@ export function MainPage() {
   // Function to display previous movie suggestions
   function MovieList({ result, wordColor }) {
     const [emailExists] = useGlobalState("usesEmail");
+=======
+    const isMobile = window.innerWidth <= 800;
+    const [backgroundColor] = useGlobalState("backgroundColor");
+    const [headerCol] = useGlobalState("headerColor");
+    // const [darkMode] = useGlobalState('DarkMode');
+    const [wordColor] = useGlobalState("wordColor");
+    const [divSearchBarClass, setDivSearchBarClass] = useState("searchBox");
+    const [searchBarClass, setSearchBarClass] = useState("searchBar");
+    const [LetterUser, setLetterUser] = useState("");
+    const [showUserData, setShowUserData] = useState(false);
+    const [dataset, setDataset] = useState([]);
+    const [previousMoviesButton, setPreviousMoviesButton] = useState(false);
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
     const [acc] = useGlobalState("account");
     function BringMovie(movieID) {
       const data = {
@@ -63,7 +77,27 @@ export function MainPage() {
             style={{
               color: wordColor,
               display: "flex",
+<<<<<<< HEAD
               flexDirection: "row",
+=======
+              alignItems: "center",
+            }}
+          > 
+            <div>
+              <h1 style={{ color: wordColor, width: "75vw", }}>
+                LetterBoxd WatchList
+              </h1>
+            </div>
+          </header>
+          <div>
+            
+            {/* Display previous movie suggestions */}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
               justifyContent: "center",
               alignItems: "center",
               border: "none"
@@ -296,6 +330,7 @@ export function MainPage() {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
     </div>
   );
 }
@@ -303,6 +338,15 @@ export function MainPage() {
 // Component for the video player
 function VideoPlayer({ src }) {
   const isMobile = window.innerWidth <= 600;
+=======
+    );
+  }
+  
+  
+  // Component for the video player
+  function VideoPlayer({ src }) {
+    const isMobile = window.innerWidth <= 800;
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
   const iframeWidth = isMobile ? "340px" : "560px";
   const iframeHeight = isMobile ? "240px" : "315px";
   <iframe

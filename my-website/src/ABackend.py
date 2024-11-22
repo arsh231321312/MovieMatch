@@ -41,10 +41,12 @@ def handling_data():
             cursor.close()
             # Close the connection when done
             connection.close()
+            
             if result is None:
                 return jsonify({"status": "failure", "message": "Sign in failed, email does not exist or password is incorrect"})
             else:
-                return jsonify({"status": "success", "message": "Salt recieved","salt":''})
+                salt=str(result[0])
+                return jsonify({"status": "success", "message": "Salt recieved","salt":salt})
         elif(email == False):
             select_query = """
             SELECT salt FROM users WHERE username_hash = %s;
@@ -58,7 +60,10 @@ def handling_data():
             if result is None:
                 return jsonify({"status": "failure", "message": "Sign in failed, username does not exist or password is incorrect"})
             else:
-                return jsonify({"status": "success","message": "Salt recieved","salt":''})
+                salt=str(result[0])
+                return jsonify({"status": "success","message": "Salt recieved","salt":salt})
+        
+    
     if (type== "signin"):
         username = data.get('username')
         password = data.get('password')

@@ -105,16 +105,18 @@ export function SignUpForm() {
         return;
       }
       let salt = generateSalt();
+      let p= salt+password;
+      let hashedpass=(CryptoJS.SHA256(p).toString()); //Hash the password
+
       //Prepare data for SQL Database
       const data = {
         username: hashedUser,
-        password: hashedPass,
+        password: hashedpass,
         email: hashedEmail,
         salt: salt,
         type: "register",
       };
       
-      alert(salt);
       // Make API call to backend
       fetch("http://localhost:5000/3000", {
         method: "POST",
@@ -164,7 +166,6 @@ export function SignUpForm() {
     function handleChangePass(e) {
       const pass = e.target.value; //Get the input value
       setPass(pass); //Set the password state to the input value
-      setHashedPass(CryptoJS.SHA256(pass).toString()); //Hash the password
       
       //Validate the password lenght
       if (pass.length < 8) {

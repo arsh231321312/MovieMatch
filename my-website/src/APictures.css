@@ -5,9 +5,13 @@
     height: 60%; /* Set the height of the element */
     position:'absolute';
     /* top: 50%; */
+<<<<<<< HEAD
     left: 82.5%;
+=======
+    left: 83%;
+>>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
     cursor: pointer;
-    /* transform: translate(10.5469vw, -5.07131vh);  */
+    transform: translate(0,0); 
     
   }
 @media (max-width:800px) {
