@@ -20,7 +20,7 @@ export function UsernameInput({ username, handleChangeUser, handleInvalid }) {
           height="40px"
           maxLength={40}
           minLength={6}
-          placeholder="Username"
+          placeholder=" Username"
           onInput={handleChangeUser}
           onInvalid={handleInvalid}
           required
@@ -50,7 +50,7 @@ export function PasswordInput({
           pattern="(?=.*\W)(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).*"
           maxLength={40}
           minLength={8}
-          placeholder={"Password123!"} 
+          placeholder={" Password123!"} 
           onInput={handleChangePass}
           onInvalid={handleInvalid}
           required

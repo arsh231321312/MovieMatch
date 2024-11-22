@@ -211,7 +211,7 @@ export function SignUpForm() {
         
         <Box>
           <div>
-            <h1 style={{ position: "relative", color: headerCol }}> Register</h1>
+            <h1 style={{ position: "relative", color: headerCol, paddingTop: "20px" }}> Register</h1>
           </div>
           <div>
             <form className="form" onSubmit={handleSubmit}>
@@ -288,7 +288,7 @@ export function SignUpForm() {
   
           {/* Section for users who already have an account */}
           <div className="divExistingACC">
-            <span style={{ color: backgroundColor }}>Have an account?</span>
+            <span className="have-account" style={{ color: backgroundColor}}>Have an account?</span>
             <span>
               <Link
                 to="/Login"

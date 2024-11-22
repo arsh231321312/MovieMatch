@@ -144,7 +144,7 @@ export function SignInForm() {
   
     //Render the sign-in form 
     return (
-      <div className="page" style={{ backgroundColor: backgroundColor }}>
+      <div className="page" >
         
         {/* Redirect the user to the main page if authentication cookies exist or login succeeds */}
       {isCookie() && <Navigate to="/mainPage" />}
@@ -155,7 +155,7 @@ export function SignInForm() {
         <Box>
           <div>
              {/* Title of the page */}
-            <h1 style={{ position: "relative", color: backgroundColor }}>
+            <h1 style={{ position: "relative", color: backgroundColor, paddingTop: "20px"}}>
               {" "}
               Sign In
             </h1>
@@ -224,7 +224,7 @@ export function SignInForm() {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              padding: "5px",
+              padding: "30px",
             }}
           >
             <span style={{ position: "relative" }}>

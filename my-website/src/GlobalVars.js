@@ -8,7 +8,8 @@ const {setGlobalState, useGlobalState} = createGlobalState({
     account: "None",
     usesEmail: false,
     accountShow: "N/A",
-    authenticated: false
+    authenticated: false,
+    borderRadius: '10px'
 });
 
 export {setGlobalState, useGlobalState};

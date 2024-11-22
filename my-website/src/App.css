@@ -1,3 +1,14 @@
+/* This css targets the Main Page that displays the movie
+that is generated to you */
+
+/* Fixes the screen to be max instead of adding the left
+and right scroll bar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -38,10 +49,17 @@
   }
 }
 
+.have-account {
+  padding-top: none;
+  padding-bottom: 100px;
+  color: red;
+}
+
+
 .box {
   width: 400px;
   height: 400px;
-  background-color: #c5c6c7; /* You can change the color as needed */
+  background-color: #c6c7c8; /* You can change the color as needed */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -55,6 +73,8 @@
   width: 100vw;
   background-color: #1f2532;
 }
+
+
 .divInputBox{
   position: relative;
   height: 41px;
@@ -103,7 +123,7 @@
   text-align:center;
   position:absolute;
   left: 50%;
-  top: 90%;
+  top: 82.5%;
   transform: translate(-50%, 50%);
   font-size: 14px;
 }
@@ -122,6 +142,7 @@
   position: relative;
   width: 100vw;
   height: 8vh;
+  padding: 10px;
 }
 @media (min-width:599px){
   .headerOptions{
@@ -149,7 +170,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  border-radius: 10px;
 
 }
 .searchBar{
@@ -157,6 +178,9 @@
   width: 50vw;
   text-align: center;
   font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 3px 3px 3px 3px black;
 }
 
 .changeSeachBox{
@@ -173,7 +197,40 @@
   width:30vw;
   text-align: center;
   font-size: 11px;
+  border-radius: 5px;
 }
+
+.video-container {
+  padding-top: 40px; /* Adjust this value to your needs */
+  margin-top: 20px; /* Optional for additional separation */
+  border : 1px solid #131f23;
+}
+
+.prevMoviesButton{
+  color: rgb(254, 249, 249);
+  background-color: rgb(54, 64, 78);
+  border-radius: 5px;
+  max-width: 20vw;
+  padding-top: 7.5px;
+  padding-bottom: 7.5px;
+  font-size: 16px;
+}
+
+.prevMoviesContainer{
+  align-items: center;
+  min-width: 100px;
+  color:#1f2532;
+}
+
+.prevMoviePoster{
+  border-radius: 20px;
+  padding: 10px;
+}
+
+/* .prevMovieText{
+  font-size: 16px;
+  padding: 20px;
+} */
 
 /* Hide scrollbar for WebKit browsers */
 .hide-scrollbar::-webkit-scrollbar {
@@ -212,15 +269,19 @@
 
 @media (max-width:600px){ 
   .poster{
-    padding: "5px";
+    padding: "10px";
     width: 250px;
     height: 375px;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 3px 3px black;
+    padding-bottom: "20px";
   }
 }
 @media (min-width:599px){
   .poster{
-    padding: "5px";
-    border-radius: 10px;
+    padding: "10px";
+    border-radius: 15px;
+    box-shadow: 3px 3px 3px 3px black;
+    padding-bottom: "20px";
   }
 }
