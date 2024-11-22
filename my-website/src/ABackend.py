@@ -25,15 +25,45 @@ def handling_data():
     )
     cursor = connection.cursor()
     if connection.is_connected():
-        print("COnnection successful")
+        print("Connection successful")
     else:
         print("Connection failed")
     
-    
+    if (type=="salt"):
+        username = data.get('username')
+        email = data.get('email')
+        if(email == True):
+            select_query = """
+            SELECT email_hash FROM users WHERE email_hash = %s;
+            """
+            cursor.execute(select_query, (str(username),))
+            result = cursor.fetchone()
+            cursor.close()
+            # Close the connection when done
+            connection.close()
+            if result is None:
+                return jsonify({"status": "failure", "message": "Sign in failed, email does not exist or password is incorrect"})
+            else:
+                return jsonify({"status": "success", "message": "Salt recieved","salt":''})
+        elif(email == False):
+            select_query = """
+            SELECT salt FROM users WHERE username_hash = %s;
+            """
+            cursor.execute(select_query, (str(username),))
+            result = cursor.fetchone()
+            cursor.close()
+            # Close the connection when done
+            connection.close()
+            
+            if result is None:
+                return jsonify({"status": "failure", "message": "Sign in failed, username does not exist or password is incorrect"})
+            else:
+                return jsonify({"status": "success","message": "Salt recieved","salt":''})
     if (type== "signin"):
         username = data.get('username')
         password = data.get('password')
         email = data.get('email')
+
         if(email == True):
             select_query = """
             SELECT email_hash, password_hash FROM users WHERE email_hash = %s and password_hash = %s;
@@ -68,6 +98,7 @@ def handling_data():
     elif (type == "register"):
         username = data.get('username')
         password = data.get('password')
+        salt=data.get('salt')
         email = data.get('email')
         select_query_email = """
         SELECT email_hash from users WHERE email_hash = %s;
@@ -85,10 +116,10 @@ def handling_data():
             return jsonify({"status": "failure", "message": "Sign up failed, username is already used"})
         
         insert_query = """
-        INSERT INTO users (username_hash, password_hash, email_hash)
-        VALUES (%s, %s, %s);
+        INSERT INTO users (username_hash, password_hash, email_hash,salt)
+        VALUES (%s, %s, %s, %s);
         """
-        cursor.execute(insert_query, (username, password, email))
+        cursor.execute(insert_query, (username, password, email, salt))
         
 
 

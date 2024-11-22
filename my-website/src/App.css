@@ -144,9 +144,9 @@ and right scroll bar */
   height: 8vh;
   padding: 10px;
 }
-@media (min-width:599px){
+@media (min-width:799px){
   .headerOptions{
-    left: 86vw;
+    right: 20px;
     position: absolute;
     display: flex;
     justify-content: flex-end;
@@ -154,7 +154,7 @@ and right scroll bar */
   }
 }
 /* mobile */
-@media (max-width:600px){ 
+@media (max-width:800px){ 
   .headerOptions{
     left:0vw;
     display: flex;
@@ -239,14 +239,14 @@ and right scroll bar */
 
 /* Hide scrollbar for IE, Edge and Firefox */
 
-@media (min-width: 599px) {
+@media (min-width: 799px) {
   .hide-scrollbar {
     -ms-overflow-style: none;  
     scrollbar-width: none;  
     width: 25vw;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .hide-scrollbar {
     -ms-overflow-style: none;  
     scrollbar-width: none;  
@@ -254,20 +254,20 @@ and right scroll bar */
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 799px) {
   .frontPageTitle {
 
     font-size: 2vw;
   }
 }
-@media (max-width: 599px) {
+@media (max-width: 800px) {
   .frontPageTitle {
     font-size: 15px;
   }
 }
 
 
-@media (max-width:600px){ 
+@media (max-width:800px){ 
   .poster{
     padding: "10px";
     width: 250px;
@@ -277,7 +277,7 @@ and right scroll bar */
     padding-bottom: "20px";
   }
 }
-@media (min-width:599px){
+@media (min-width:799px){
   .poster{
     padding: "10px";
     border-radius: 15px;

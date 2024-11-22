@@ -10,7 +10,7 @@
     /* transform: translate(10.5469vw, -5.07131vh);  */
     
   }
-@media (max-width:600px) {
+@media (max-width:800px) {
   .password_eye {
     width: 4.8vw; /* Set the width of the element */
     height: 4.8vw; /* Set the height of the element */
