@@ -6,7 +6,7 @@ import { useGlobalState } from "../GlobalVars"; // Global state management funct
 
 // Component for the main page
 export function MainPage() {
-    const isMobile = window.innerWidth <= 600;
+    const isMobile = window.innerWidth <= 800;
     const [backgroundColor] = useGlobalState("backgroundColor");
     const [headerCol] = useGlobalState("headerColor");
     // const [darkMode] = useGlobalState('DarkMode');
@@ -141,7 +141,7 @@ export function MainPage() {
             }}
           > 
             <div>
-              <h1 style={{ color: wordColor, width: "75vw" }}>
+              <h1 style={{ color: wordColor, width: "75vw", }}>
                 LetterBoxd WatchList
               </h1>
             </div>
@@ -282,7 +282,7 @@ export function MainPage() {
   
   // Component for the video player
   function VideoPlayer({ src }) {
-    const isMobile = window.innerWidth <= 600;
+    const isMobile = window.innerWidth <= 800;
   const iframeWidth = isMobile ? "340px" : "560px";
   const iframeHeight = isMobile ? "240px" : "315px";
   <iframe

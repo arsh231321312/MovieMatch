@@ -17,7 +17,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
 };
 
 function App() { 
-    const [mediaOption] = useState(window.innerWidth>600)
+    const [mediaOption] = useState(window.innerWidth>800)
     return ( 
       
 

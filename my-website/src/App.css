@@ -112,9 +112,9 @@
   width: 100vw;
   height: 8vh;
 }
-@media (min-width:599px){
+@media (min-width:799px){
   .headerOptions{
-    left: 86vw;
+    right: 20px;
     position: absolute;
     display: flex;
     justify-content: flex-end;
@@ -122,7 +122,7 @@
   }
 }
 /* mobile */
-@media (max-width:600px){ 
+@media (max-width:800px){ 
   .headerOptions{
     left:0vw;
     display: flex;
@@ -171,14 +171,14 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 
-@media (min-width: 599px) {
+@media (min-width: 799px) {
   .hide-scrollbar {
     -ms-overflow-style: none;  
     scrollbar-width: none;  
     width: 25vw;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .hide-scrollbar {
     -ms-overflow-style: none;  
     scrollbar-width: none;  
@@ -186,27 +186,27 @@
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 799px) {
   .frontPageTitle {
 
     font-size: 2vw;
   }
 }
-@media (max-width: 599px) {
+@media (max-width: 800px) {
   .frontPageTitle {
     font-size: 15px;
   }
 }
 
 
-@media (max-width:600px){ 
+@media (max-width:800px){ 
   .poster{
     padding: "5px";
     width: 250px;
     height: 375px;
   }
 }
-@media (min-width:599px){
+@media (min-width:799px){
   .poster{
     padding: "5px";
   }

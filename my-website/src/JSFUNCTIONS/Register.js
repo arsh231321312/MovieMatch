@@ -9,11 +9,10 @@ import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state 
 import { Box } from "./InputFunctions";
 import {setCookie } from "./Cookie";
 import {PasswordInput,UsernameInput,EmailInput,} from './InputFunctions'
-
-
-
+import bcrypt from 'bcryptjs';
 
 export function SignUpForm() {
+
     //Variables to store user input and validation messages
     const [username, setUser] = useState("");
     const [password, setPass] = useState("");
@@ -36,7 +35,13 @@ export function SignUpForm() {
     const [headerCol] = useGlobalState("headerColor");
     const [loginFail, setLoginFail] = useState(false);
     const [loginFailMSG, setLoginFailMSG] = useState("");
-    
+
+    // Function to generate a salt
+    function generateSalt() {
+      const saltRounds = 10;
+      const salt = bcrypt.genSaltSync(saltRounds);
+      return salt;
+    }
     /**
    * Toggle the visibility of the password field
    */
@@ -99,15 +104,17 @@ export function SignUpForm() {
       ) {
         return;
       }
-      
+      let salt = generateSalt();
       //Prepare data for SQL Database
       const data = {
         username: hashedUser,
         password: hashedPass,
         email: hashedEmail,
+        salt: salt,
         type: "register",
       };
-  
+      
+      alert(salt);
       // Make API call to backend
       fetch("http://localhost:5000/3000", {
         method: "POST",
