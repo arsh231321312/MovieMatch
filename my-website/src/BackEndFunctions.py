@@ -12,7 +12,6 @@ def load_prev_movie(movieID,emailExists,account,cursor,connection):
     if result:
         result=result[0]
     
-    print(result)
     if emailExists:        
         pass
     else:
@@ -90,22 +89,12 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
         
 
 
-        print(backgroundImage)
-        print(title)
-        print(rating)
-        print(tagline)
-        print(description)
-
     
     titleDetails=soup.find('section',class_='film-header-group')
     year=titleDetails.find('div',class_='releaseyear')
     year=year.find('a').text
     titleDetails=titleDetails.find('span',class_="name js-widont prettify")
-    
-    # director=titleDetails.find('div',class_='metablock')
-    # director=director.find('span',class_='prettify')
-    # print(director.text)
-    print(year)
+
     
     
     div = soup.find('div', class_='col-6 gutter-right-1 col-poster-large', id='js-poster-col')
@@ -117,8 +106,7 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
         href=""
     name=titleDetails.text.replace(' ','-').lower()
     link='https://letterboxd.com/film/'+name+'/watch/'
-    print(link)
-    print(href)
+
     
     
 
@@ -128,13 +116,11 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
         url=""
         posterImg=""
     else:
-        # print(poster[1].get('href'))
         url=str(poster[-1].get('href'))
         
 
         # Send a GET request to the URL
         response = requests.get(url)
-        print(response)
         posterImg=""
         # Check if the request was successful
         if response.status_code == 200:
@@ -148,10 +134,10 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
             # Print the div content
             else:
                 div_content = ""
-            print("No content found")
+
             
             posterImg=str(div_content)
-            print(posterImg)
+
     data={
         "theme" :theme,
         "background": backgroundImage,
@@ -166,8 +152,7 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
         "whereToWatch" : link
         
     }
-    print(emailExists)
-    print(account)
+
     if emailExists:
         select_query_user = """
         SELECT movie_id from users WHERE email_hash = %s;
@@ -190,11 +175,8 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
     if len(result)>19:
         result.pop(0)
     result.append(str(id))
-    print("length")
-    print(len(result))
-    print(id)
+
     string=(",".join(result))
-    print(string)
     if emailExists:
         update_query = """
         UPDATE users SET movie_id = %s WHERE email_hash = %s;
@@ -290,7 +272,6 @@ def get_random_movie(userLetterboxd):
 
     response = requests.get(url)
     if(response.status_code != 200):
-        print("This user does not exist")
         return "This user does not exist"
     soup = BeautifulSoup(response.content, 'html.parser')
     page = soup.find_all('li',class_='paginate-page')
@@ -309,6 +290,5 @@ def get_random_movie(userLetterboxd):
     # Wait for all threads to complete
     
     if len(lists)==0:
-        print("User has nothing in wishlist")
         return "User has nothing in wishlist"
     return (random.choice(lists))

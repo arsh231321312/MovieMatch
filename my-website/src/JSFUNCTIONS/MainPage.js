@@ -100,8 +100,7 @@ export function MainPage() {
 >>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
               justifyContent: "center",
               alignItems: "center",
-              border: "none"
-    
+              border: "none",
             }}
             onClick={() => BringMovie(item[2])}
           >
@@ -256,12 +255,11 @@ export function MainPage() {
               <div
                 style={{
                   height: "100%",
-                  width: "350px",
+                  width: "auto",
                   overflowY: "auto", // Change overflow to overflowY
                   wordWrap: "break-word",
                   backgroundColor: "#2F3E46",
                   borderRadius: "10px",
-                  marginLeft: "3vw",
                 }}
                 className="hide-scrollbar"
               >

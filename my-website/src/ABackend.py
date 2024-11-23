@@ -20,7 +20,7 @@ def handling_data():
     connection = mysql.connector.connect(
         host="localhost",        # Your host, e.g., localhost or AWS RDS instance
         user="root",    # Your MySQL username
-        password="Kitkat@23",# Your MySQL password
+        password="Sandhu57628136$",# Your MySQL password
         database="newdata" # The database you want to connect to
     )
     cursor = connection.cursor()
@@ -167,7 +167,6 @@ def handling_data():
             # Close the connection when done
             connection.close()
             rows_affected = cursor.rowcount
-            print(f"Rows affected: {rows_affected}")
             if rows_affected==0:
                 return jsonify({"status": "failure", "message": "Change password failed, username does not exist"})
             else:

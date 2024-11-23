@@ -4,14 +4,10 @@ import React, { useState } from "react"; // React library for building UI and us
 import CryptoJS from "crypto-js"; //Cryptographic operations
 import { Link, Navigate } from "react-router-dom"; // Navigation components for routing
 import "../App.css"; 
-import eye_closed from "../pictures/eye_closed.png"; 
-import darkSun from "../pictures/sun.png"; 
-import sun from "../pictures/sunBright.png"; 
 import "../APictures.css"; 
 import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions
-import { jwtDecode } from "jwt-decode"; // Library to decode JSON web tokens
 import { Box } from "./InputFunctions";
-import { isCookie,getCookie,setCookie,removeCookie } from "./Cookie";
+import { isCookie,setCookie } from "./Cookie";
 import {PasswordInput,UsernameInput} from './InputFunctions'
 
 //Date: 2024-11-15 changed made by: Katherine
@@ -23,7 +19,6 @@ export function SignInForm() {
     const [backgroundColor] = useGlobalState("backgroundColor");
     const [wordColor] = useGlobalState("wordColor");
     const [password, setPassword] = useState("");
-    const [hashedPass, setHashedPass] = useState("");
     const [username, setUsername] = useState("");
     const [hashedUser, setHashedUser] = useState("");
     const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
@@ -31,15 +26,11 @@ export function SignInForm() {
     const [errorMessageExistsPass, setErrorMessageExistsPass] = useState(false);
     const [errorMessagePass, setErrorMessagePass] = useState("");
     const [revealPassword, setRevealPassword] = useState(true);
-    // const [emailExists, setEmailExists] = useState(false);
+    const [emailExists, setEmailExists] = useState(false);
     const [loginFail, setLoginFail] = useState(false);
     const [loginFailMSG, setLoginFailMSG] = useState("");
     const [gotoMainPage, setGotoMainPage] = useState(false);
-<<<<<<< HEAD
     function submit(hash){
-=======
-    function submit(hash,emailExists){
->>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
       //Prepare data for submission to SQL database
       const data = {
         username: hashedUser,
@@ -80,11 +71,6 @@ export function SignInForm() {
         });
     }
     function handleSubmit(e) {
-      let gotSalt=false;
-<<<<<<< HEAD
-=======
-      let emailExists=false;
->>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
       e.preventDefault(); //prevent default form submission behavior
   
       //checks if the username is at least 6 characters long
@@ -97,15 +83,7 @@ export function SignInForm() {
       if (errorMessageExistsUser) {//Stop if username validation fails
         return;
       }
-<<<<<<< HEAD
       
-=======
-      if (username.includes("@") === true) {//checks if the username contains an @ symbol
-        emailExists=true; //If it does, set emailExists to true
-      } else { //If it does not, set emailExists to false
-        emailExists=false;
-      }
->>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
       const dataSalt={
         username: hashedUser,
         email: emailExists,
@@ -133,11 +111,7 @@ export function SignInForm() {
             setGlobalState("account", hashedUser);
             const p=data.salt+password;
             let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
-<<<<<<< HEAD
             submit(hash);
-=======
-            submit(hash,emailExists);
->>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
           }
         })
   
@@ -165,17 +139,17 @@ export function SignInForm() {
       setHashedUser(CryptoJS.SHA256(user).toString()); //Hash the username
       
       //checks username length
-      // if (username.length < 6) {
-      //   setErrorMessageUser("Username must be at least 6 characters long");
-      //   setErrorMessageExistsUser(true);
-      // } else {
-      //   setErrorMessageExistsUser(false);
-      // }
-      // if (username.includes("@") === true) {//checks if the username contains an @ symbol
-      //   setEmailExists(true); //If it does, set emailExists to true
-      // } else { //If it does not, set emailExists to false
-      //   setEmailExists(false);
-      // }
+      if (username.length < 6) {
+        setErrorMessageUser("Username must be at least 6 characters long");
+        setErrorMessageExistsUser(true);
+      } else {
+        setErrorMessageExistsUser(false);
+      }
+      if (username.includes("@") === true) {//checks if the username contains an @ symbol
+        setEmailExists(true); //If it does, set emailExists to true
+      } else { //If it does not, set emailExists to false
+        setEmailExists(false);
+      }
     }
     function handleInvalid(event) {
       event.preventDefault(); // Prevent the form from submitting
