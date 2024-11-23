@@ -83,26 +83,121 @@ export function ResetPasswordForm() {
         type: "changePassword",
       };
   
-      //Send Post request to backend
-      fetch("http://localhost:5000/3000", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", //Set content type to JSON
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json()) // Parse response to JSON
-        .then((data) => {
-          if (data.status === "failure") { //If the response is a failure, display the error message
-            setResetPassFail(true);
-            setResetPassFailMSG(data.message);
-          } else {
-            setGotoLoginPage(true);
-          }
+      // //Send Post request to backend
+      // fetch("http://localhost:5000/3000", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json", //Set content type to JSON
+      //   },
+      //   body: JSON.stringify(data),
+      // })
+      //   .then((response) => response.json()) // Parse response to JSON
+      //   .then((data) => {
+      //     if (data.status === "failure") { //If the response is a failure, display the error message
+      //       setResetPassFail(true);
+      //       setResetPassFailMSG(data.message);
+      //     } else {
+      //       setGotoLoginPage(true);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error:", error);
+      //   });
+      function submit(hash,emailExists){
+        //Prepare data for submission to SQL database
+        const data = {
+          username: hashedUser,
+          password: hash,
+          email: emailExists,
+          type: "changePassword",
+        };
+        //Send Post request to backend
+        fetch("http://localhost:5000/3000", {
+          method: "POST", //HTTP method
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data), //Convert data to JSON
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "failure") {
+              //If the response is a failure, display the error message
+              setGotoMainPage(false);
+              setLoginFailMSG(data.message);
+              setLoginFail(true);
+            } else {
+              //login success
+              setGlobalState("authenticated", true);
+              setGlobalState("usesEmail", emailExists); //tracks if email already exists
+              setGlobalState("account", hashedUser);
+              setCookie('authToken', data.token, 15); //Set the authentication token in cookies
+              setLoginFail(false);
+              setGotoMainPage(true); //Redirect to the main page
+              
+            }
+          })
+    
+          //toggles password visibilty through the eye icon
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      function handleSubmit(e) {
+        let gotSalt=false;
+        let emailExists=false;
+        e.preventDefault(); //prevent default form submission behavior
+    
+        //checks if the username is at least 6 characters long
+        if (username.length < 6) {
+          setErrorMessageUser("Username must be at least 6 characters long");
+          setErrorMessageExistsUser(true);
+        } else {
+          setErrorMessageExistsUser(false);
+        }
+        if (errorMessageExistsUser) {//Stop if username validation fails
+          return;
+        }
+        if (username.includes("@") === true) {//checks if the username contains an @ symbol
+          emailExists=true; //If it does, set emailExists to true
+        } else { //If it does not, set emailExists to false
+          emailExists=false;
+        }
+        const dataSalt={
+          username: hashedUser,
+          email: emailExists,
+          type: "salt",
+        };
+        //Send Post request to backend
+        fetch("http://localhost:5000/3000", {
+          method: "POST", //HTTP method
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataSalt), //Convert data to JSON
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "failure") {
+              //If the response is a failure, display the error message
+              setGotoMainPage(false);
+              setLoginFailMSG(data.message);
+              setLoginFail(true);
+              alert("failed")
+            } else {
+              //login success
+              setGlobalState("usesEmail", emailExists); //tracks if email already exists
+              setGlobalState("account", hashedUser);
+              const p=data.salt+password;
+              let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
+              submit(hash,emailExists);
+            }
+          })
+    
+          //toggles password visibilty through the eye icon
+          .catch((error) => {
+            console.error("Error:", error);
+          });
     }
   
     //Function to handle changes in the username input field
