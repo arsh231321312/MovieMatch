@@ -4,14 +4,10 @@ import React, { useState } from "react"; // React library for building UI and us
 import CryptoJS from "crypto-js"; //Cryptographic operations
 import { Link, Navigate } from "react-router-dom"; // Navigation components for routing
 import "../App.css"; 
-import eye_closed from "../pictures/eye_closed.png"; 
-import darkSun from "../pictures/sun.png"; 
-import sun from "../pictures/sunBright.png"; 
 import "../APictures.css"; 
 import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions
-import { jwtDecode } from "jwt-decode"; // Library to decode JSON web tokens
 import { Box } from "./InputFunctions";
-import { isCookie,getCookie,setCookie,removeCookie } from "./Cookie";
+import { isCookie,setCookie } from "./Cookie";
 import {PasswordInput,UsernameInput} from './InputFunctions'
 
 //Date: 2024-11-15 changed made by: Katherine
@@ -23,7 +19,6 @@ export function SignInForm() {
     const [backgroundColor] = useGlobalState("backgroundColor");
     const [wordColor] = useGlobalState("wordColor");
     const [password, setPassword] = useState("");
-    const [hashedPass, setHashedPass] = useState("");
     const [username, setUsername] = useState("");
     const [hashedUser, setHashedUser] = useState("");
     const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
@@ -76,7 +71,6 @@ export function SignInForm() {
         });
     }
     function handleSubmit(e) {
-      let gotSalt=false;
       e.preventDefault(); //prevent default form submission behavior
   
       //checks if the username is at least 6 characters long

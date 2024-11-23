@@ -19,7 +19,6 @@ export function SignUpForm() {
     const [email, setEmail] = useState("");
     const [PasswordRepeat, setPassRepeat] = useState("");
     const [hashedUser, setHashedUser] = useState("");//Hashed username
-    const [hashedPass, setHashedPass] = useState("");//Hashed password
     const [hashedEmail, setHashedEmail] = useState(""); //Hashed email
     const [errorMessageExistsEmail, setErrorMessageExistsEmail] = useState(false);
     const [errorMessageEmail, setErrorMessageEmail] = useState("");
@@ -195,7 +194,6 @@ export function SignUpForm() {
     function handleChangePassRepeat(e) {
       const pass = e.target.value;
       setPassRepeat(pass);
-      setHashedPass(CryptoJS.SHA256(pass).toString());
       // if (password === PasswordRepeat) {
       //   setErrorPassMismatch(false);
       // }else {

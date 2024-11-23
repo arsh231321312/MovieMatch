@@ -66,8 +66,7 @@ export function MainPage() {
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
-              border: "none"
-    
+              border: "none",
             }}
             onClick={() => BringMovie(item[2])}
           >
@@ -222,12 +221,11 @@ export function MainPage() {
               <div
                 style={{
                   height: "100%",
-                  width: "350px",
+                  width: "auto",
                   overflowY: "auto", // Change overflow to overflowY
                   wordWrap: "break-word",
                   backgroundColor: "#2F3E46",
                   borderRadius: "10px",
-                  marginLeft: "3vw",
                 }}
                 className="hide-scrollbar"
               >

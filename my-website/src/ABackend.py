@@ -167,7 +167,6 @@ def handling_data():
             # Close the connection when done
             connection.close()
             rows_affected = cursor.rowcount
-            print(f"Rows affected: {rows_affected}")
             if rows_affected==0:
                 return jsonify({"status": "failure", "message": "Change password failed, username does not exist"})
             else:
