@@ -330,7 +330,6 @@ export function MainPage() {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
     </div>
   );
 }
@@ -338,15 +337,6 @@ export function MainPage() {
 // Component for the video player
 function VideoPlayer({ src }) {
   const isMobile = window.innerWidth <= 600;
-=======
-    );
-  }
-  
-  
-  // Component for the video player
-  function VideoPlayer({ src }) {
-    const isMobile = window.innerWidth <= 800;
->>>>>>> d2a9a3526d190f4a80bf19dc513f30c1c3c9ded7
   const iframeWidth = isMobile ? "340px" : "560px";
   const iframeHeight = isMobile ? "240px" : "315px";
   <iframe
