@@ -46,7 +46,7 @@ export function MainPage() {
           if (data.status === "failure") {
             alert(movieID);
           } else {
-            alert(movieID);
+            setDataset(data.data);
           }
         })
         .catch((error) => {

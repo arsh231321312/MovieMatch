@@ -8,17 +8,40 @@ def load_prev_movie(movieID,emailExists,account,cursor,connection):
     WHERE movieID=%s
     """
     cursor.execute(select_query,[movieID])
-    result=cursor.fetchall()
-    if result:
-        result=result[0]
+    r=cursor.fetchall()
+    r=r[0]
+    theme = r[0]
+    backgroundImage=r[0]
+    director=r[0]
+    title=r[1]
+    year=r[2]
+    rating=r[3]
+    tagline=r[4]
+    description=r[5]
+    posterImg=r[6]
+    href=r[7]
+    link=r[8]
     
-    if emailExists:        
-        pass
-    else:
-        pass
+    data={
+        "theme" :theme,
+        "background": backgroundImage,
+        "director" : director,
+        "title" : title,
+        "releaseYear" : year,
+        "rating" : rating,
+        "tagline" : tagline,
+        "description": description,
+        "posterImg" : posterImg,
+        "trailer" : href,
+        "whereToWatch" : link
+        
+    }
+    print(data)
+
+
     cursor.close()
     connection.close()
-    pass
+    return data
 def get_movie_data(movie_link,emailExists,account,cursor,connection):
 
 
