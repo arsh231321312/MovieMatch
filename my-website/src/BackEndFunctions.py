@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import random
 
-def load_prev_movie(movieID,emailExists,account,cursor,connection):
+def load_prev_movie(movieID,cursor,connection):
     select_query = """
     SELECT director,title,releaseYear,rating,tagline,movie_description,poster_url,trailer,wheretowatch FROM movies
     WHERE movieID=%s
@@ -11,7 +11,6 @@ def load_prev_movie(movieID,emailExists,account,cursor,connection):
     r=cursor.fetchall()
     if r:
         r=r[0]
-    print(r)
     
     theme=""
     backgroundImage=""
@@ -244,7 +243,6 @@ def get_movie_data(movie_link,emailExists,account,cursor,connection):
             titleMovie=""
 
         result[i]=[picture,titleMovie,str(mvID)]
-        print(result)
         
     cursor.close()
     connection.close()

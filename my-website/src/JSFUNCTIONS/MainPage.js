@@ -2,6 +2,7 @@
 import React, { useState } from "react"; // React library for building UI and useState for state management
 import "../App.css";
 import "../APictures.css";
+import eye_closed from "../pictures/eye_closed.png"
 import { useGlobalState } from "../GlobalVars"; // Global state management functions
 // import "bootstrap/dist/css/bootstrap.min.css"; //Adding bootstrap import
 
@@ -19,8 +20,8 @@ export function MainPage() {
   const [showUserData, setShowUserData] = useState(false);
   const [dataset, setDataset] = useState([]);
   const [previousMoviesButton, setPreviousMoviesButton] = useState(false);
-  const [acc] = useGlobalState("account");
-  const [em] = useGlobalState("usesEmail");
+  // const [acc] = useGlobalState("account");
+  // const [em] = useGlobalState("usesEmail");
   const [result, setResult] = useState([]);
 
   // Function to display previous movie suggestions
@@ -91,8 +92,6 @@ export function MainPage() {
 
     const data = {
       username: LetterUser,
-      account: acc,
-      emailExists: em,
       type: "LetterUser",
     };
 
@@ -144,10 +143,12 @@ export function MainPage() {
             alignItems: "center",
           }}
         >
-          <div>
+          <div style={{display:'flex',flexDirection:'row'}}>
             <h1 className="LetterBoxdTitle" style={{ color: wordColor, width: "75vw" }}>
               LetterBoxd WatchList
             </h1>
+            
+            <img src={eye_closed} alt="logout"></img>
           </div>
         </header>
         <div>{/* Display previous movie suggestions */}</div>
