@@ -176,7 +176,7 @@ def handling_data():
         movie=get_random_movie(data.get('username'))
         if movie == "This user does not exist" or movie == "User has nothing in wishlist":
             return jsonify({"status": "failure", "message": movie})
-        
+        print(movie)
         movie_link = 'https://letterboxd.com/film/'+movie
         emailExists=(data.get('emailExists'))
         account=(data.get('account'))
@@ -186,8 +186,9 @@ def handling_data():
         emailExists = data.get('emailExists')
         account = data.get('account')
         movieID = data.get('movieID')
-        load_prev_movie(movieID,emailExists,account,cursor,connection)
-        return jsonify({"status":"success", "message": "not finished"})
+
+        data=load_prev_movie(movieID,emailExists,account,cursor,connection)
+        return jsonify({"status":"success", "message": "movie", "data":data})
     else:
         return jsonify({"status": "failure", "message": "Sign up failed, due to an error on our end please make a ticket or send an email to Arsh.singh.sandhu1@gmail.com"})
     
