@@ -138,35 +138,72 @@ def handling_data():
         username = data.get('username')
         password = data.get('password')
         email = data.get('email')
-        
-        if email == True:
-            update_query = """
-            UPDATE users
-            SET password_hash = %s
-            WHERE email_hash = %s;
+        salt="default"
+        result=None
+        if email==True:
+            select_query_user = """
+            SELECT salt from users WHERE email_hash = %s;
             """
-            cursor.execute(update_query, (password, username))
+            cursor.execute(select_query_user, [username])
+            result = cursor.fetchone()
+        else:
+            select_query_user = """
+            SELECT salt from users WHERE username_hash = %s;
+            """
+            cursor.execute(select_query_user, [username])
+            result = cursor.fetchone()
+        if result is None:
+            return jsonify({"status": "failure", "message": "Change password failed, Account does not exists"})
+        salt=result[0]
+        if email == True:
+            insert_query = """
+            insert into passReq (email_hash,salt,passwordChangeReq)
+            values (%s, %s, %s);
+            """
+            cursor.execute(insert_query, (username, salt, password))
             connection.commit()
             cursor.close()
             # Close the connection when done
             connection.close()
             rows_affected = cursor.rowcount
+            # update_query = """
+            # UPDATE users
+            # SET password_hash = %s
+            # WHERE email_hash = %s;
+            # """
+            # cursor.execute(update_query, (password, username))
+            # connection.commit()
+            # cursor.close()
+            # # Close the connection when done
+            # connection.close()
+            # rows_affected = cursor.rowcount
             if rows_affected==0:
                 return jsonify({"status": "failure", "message": "Change password failed, email does not exist"})
             else:
                 return jsonify({"status": "success", "message": "Password changed!"})
         else:
-            update_query = """
-            UPDATE users
-            SET password_hash = %s
-            WHERE username_hash = %s;
+            insert_query = """
+            insert into passReq (username_hash,salt,passwordChangeReq)
+            values (%s, %s, %s);
             """
-            cursor.execute(update_query, (password, username))
+            cursor.execute(insert_query, (username, salt, password))
             connection.commit()
             cursor.close()
             # Close the connection when done
             connection.close()
             rows_affected = cursor.rowcount
+
+            # update_query = """
+            # UPDATE users
+            # SET password_hash = %s
+            # WHERE username_hash = %s;
+            # """
+            # cursor.execute(update_query, (password, username))
+            # connection.commit()
+            # cursor.close()
+            # # Close the connection when done
+            # connection.close()
+            # rows_affected = cursor.rowcount
             if rows_affected==0:
                 return jsonify({"status": "failure", "message": "Change password failed, username does not exist"})
             else:
@@ -188,6 +225,28 @@ def handling_data():
         movieID = data.get('movieID')
         data=load_prev_movie(movieID,emailExists,account,cursor,connection)
         return jsonify({"status":"success", "message": "not finished","data":data})
+    elif (type=="ADMINSALT"):
+        username=data.get('username')
+        select_query_user = """
+        SELECT salt from adminusers WHERE username_hash = %s;
+        """
+        cursor.execute(select_query_user, [username])
+        result = cursor.fetchone()
+        if result is None:
+            return jsonify({"status": "failure", "message": "Change password failed, Account does not exists"})
+        salt=str(result[0])
+        return jsonify({"status":"success", "message": "not finished","salt":salt})
+    elif (type=="ADMIN"):
+        username = data.get('username')
+        password = data.get('password')
+        select_query = """
+        SELECT * from adminusers where username_hash = %s and password_hash = %s;
+        """
+        cursor.execute(select_query, (username,password))
+        result = cursor.fetchone()
+        if result is None:
+            return jsonify({"status": "failure", "message": "Admin login failed, Account does not exists"})
+        return jsonify({"status":"success", "message": "not finished"})
     else:
         return jsonify({"status": "failure", "message": "Sign up failed, due to an error on our end please make a ticket or send an email to Arsh.singh.sandhu1@gmail.com"})
     

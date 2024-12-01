@@ -60,6 +60,7 @@ export function SignUpForm() {
       let errorMessageExistsUserScope = false;
       let errorMessageExistsEmailScope = false;
       let passwordMismatchScope = false;
+      let admin=false;
       e.preventDefault(); // Prevent default form submission behavior
       
   
@@ -71,7 +72,8 @@ export function SignUpForm() {
       } else {
         setErrorMessageExistsUser(false);
       }
-  
+      
+
       // Validate email format
       if (email.length < 6) { //email is less than 6 characters
         setErrorMessageEmail("Email must be at least 6 characters long");

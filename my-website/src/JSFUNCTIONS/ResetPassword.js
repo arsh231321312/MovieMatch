@@ -62,7 +62,7 @@ export function ResetPasswordForm() {
       } else {
         emailExists = false;
       }
-  
+      
       //Checks if passwords are identical
       if (password === PasswordRepeat) {
         setErrorPassMismatch(false);

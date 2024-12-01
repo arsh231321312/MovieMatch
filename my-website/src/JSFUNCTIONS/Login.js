@@ -9,12 +9,13 @@ import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state 
 import { Box } from "./InputFunctions";
 import { isCookie,setCookie } from "./Cookie";
 import {PasswordInput,UsernameInput} from './InputFunctions'
-
+import { adminPost } from "./Admin"; 
 //Date: 2024-11-15 changed made by: Katherine
 //adding bootstrap import
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Sign-in form component
+
 export function SignInForm() {
     const [backgroundColor] = useGlobalState("backgroundColor");
     const [wordColor] = useGlobalState("wordColor");
@@ -30,6 +31,7 @@ export function SignInForm() {
     const [loginFail, setLoginFail] = useState(false);
     const [loginFailMSG, setLoginFailMSG] = useState("");
     const [gotoMainPage, setGotoMainPage] = useState(false);
+    const [ADMIN] = useGlobalState("ADMIN");
     function submit(hash){
       //Prepare data for submission to SQL database
       const data = {
@@ -83,7 +85,11 @@ export function SignInForm() {
       if (errorMessageExistsUser) {//Stop if username validation fails
         return;
       }
-      
+      if (username.includes(".ADMIN") ===true){
+        adminPost(hashedUser,password);
+        return;
+      }
+
       const dataSalt={
         username: hashedUser,
         email: emailExists,
@@ -180,8 +186,7 @@ export function SignInForm() {
       <div className="page" >
         
         {/* Redirect the user to the main page if authentication cookies exist or login succeeds */}
-      {isCookie() && <Navigate to="/mainPage" />}
-  
+        {ADMIN && <Navigate to="/ADMIN"/>}
         {isCookie() && <Navigate to="/mainPage"/>}
         {gotoMainPage && <Navigate to="/mainPage" />}
         
