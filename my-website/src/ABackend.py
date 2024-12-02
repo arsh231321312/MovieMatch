@@ -111,6 +111,8 @@ def handling_data():
         cursor.execute(select_query_email, [email])
         result = cursor.fetchone()
         if result is not None:
+            cursor.close()
+            connection.close()
             return jsonify({"status": "failure", "message": "Sign up failed, email is already used"})
         select_query_user = """
         SELECT username_hash from users WHERE username_hash = %s;
@@ -118,6 +120,8 @@ def handling_data():
         cursor.execute(select_query_user, [username])
         result = cursor.fetchone()
         if result is not None:
+            cursor.close()
+            connection.close()
             return jsonify({"status": "failure", "message": "Sign up failed, username is already used"})
         
         insert_query = """
@@ -153,6 +157,8 @@ def handling_data():
             cursor.execute(select_query_user, [username])
             result = cursor.fetchone()
         if result is None:
+            cursor.close()
+            connection.close()
             return jsonify({"status": "failure", "message": "Change password failed, Account does not exists"})
         salt=result[0]
         if email == True:
@@ -218,6 +224,8 @@ def handling_data():
         emailExists=(data.get('emailExists'))
         account=(data.get('account'))
         data,result=get_movie_data(movie_link,emailExists,account,cursor,connection)
+        cursor.close()
+        connection.close()
         return jsonify({"status":"success", "message": movie, "data":data,"result":result})
     elif(type == "LoadPrevMovie"):
         emailExists = data.get('emailExists')
@@ -235,6 +243,8 @@ def handling_data():
         if result is None:
             return jsonify({"status": "failure", "message": "Change password failed, Account does not exists"})
         salt=str(result[0])
+        cursor.close()
+        connection.close()
         return jsonify({"status":"success", "message": "not finished","salt":salt})
     elif (type=="ADMIN"):
         username = data.get('username')
@@ -244,9 +254,26 @@ def handling_data():
         """
         cursor.execute(select_query, (username,password))
         result = cursor.fetchone()
+        cursor.close()
+        connection.close()
         if result is None:
             return jsonify({"status": "failure", "message": "Admin login failed, Account does not exists"})
         return jsonify({"status":"success", "message": "not finished"})
+    elif (type=="GetChangePassReqs"):
+        select_query = """
+        SELECT username_hash,email_hash,salt,passwordChangeReq FROM passreq;
+        """
+        cursor.execute(select_query)
+        result = cursor.fetchall()
+        result=list(result[0])
+        data=[]
+        for r in result:
+            pass
+        cursor.close()
+        connection.close()
+        print(result)
+
+        return jsonify({"status":"success","message" : "Got requests","result":result})
     else:
         return jsonify({"status": "failure", "message": "Sign up failed, due to an error on our end please make a ticket or send an email to Arsh.singh.sandhu1@gmail.com"})
     

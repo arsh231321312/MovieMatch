@@ -9,7 +9,7 @@ import { Box } from "./InputFunctions";
 import {setCookie } from "./Cookie";
 import {PasswordInput,UsernameInput,EmailInput,} from './InputFunctions'
 import bcrypt from 'bcryptjs';
-
+import RefreshButton from "./resresh";
 export function adminPost(hashedUser,password){
     function submit(hash){
         const data = {
@@ -77,17 +77,41 @@ export function adminPost(hashedUser,password){
           }
         })
   
-        //toggles password visibilty through the eye icon
         .catch((error) => {
           console.error("Error:", error);
         });
 }
 
 export function AdminLogin(){
+
     const [backgroundColor] = useGlobalState("backgroundColor");
     const [headerColor] = useGlobalState("headerColor");
     const [wordColor] = useGlobalState("wordColor");
     const [result] = useState([]);
+    function handleRefresh(){
+        const dataSalt={
+            type:"GetChangePassReqs"
+          };
+          //Send Post request to backend
+          fetch("http://localhost:5000/3000", {
+            method: "POST", //HTTP method
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataSalt), //Convert data to JSON
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "failure") {
+                alert("failed")
+              } else {
+                alert(data.result)
+              }
+            })
+                  .catch((error) => {
+              console.error("Error:", error);
+            });
+    }
     return (
         <div>
             {/* Main page container with dynamic background color */}
@@ -97,8 +121,11 @@ export function AdminLogin(){
                 <header className="header" style={{ backgroundColor: headerColor, color: wordColor }}>
                     ADMIN VIEW
                 </header>
-
+                
                 <div className="box">
+                    <div>
+                        <RefreshButton handleRefresh={handleRefresh} col={backgroundColor}/>
+                    </div>
                     {result.map((item, index) => (
                         <h1>hello</h1>
                     ))}
