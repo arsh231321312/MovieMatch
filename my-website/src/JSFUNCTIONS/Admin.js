@@ -1,14 +1,9 @@
 //Import necessary libraries and components
 import React, { useState } from "react"; // React library for building UI and useState for state management
 import CryptoJS from "crypto-js"; //Cryptographic operations
-import { Link, Navigate } from "react-router-dom"; // Navigation components for routing
 import "../App.css"; 
 import "../APictures.css"; 
-import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions
-import { Box } from "./InputFunctions";
-import {setCookie } from "./Cookie";
-import {PasswordInput,UsernameInput,EmailInput,} from './InputFunctions'
-import bcrypt from 'bcryptjs';
+import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions;
 import RefreshButton from "./resresh";
 export function adminPost(hashedUser,password){
     function submit(hash){
@@ -64,13 +59,8 @@ export function adminPost(hashedUser,password){
           if (data.status === "failure") {
             //If the response is a failure, display the error message
             setGlobalState('ADMIN',false);
-            // setLoginFailMSG(data.message);
-            // setLoginFail(true);
             alert("failed")
           } else {
-            //login success
-            // setGlobalState("usesEmail", emailExists); //tracks if email already exists
-            // setGlobalState("account", hashedUser);
             const p=data.salt+password;
             let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
             submit(hash);
@@ -81,13 +71,39 @@ export function adminPost(hashedUser,password){
           console.error("Error:", error);
         });
 }
-
+function approveRequest(){
+    const data={
+        type: "ADMINAPPROVE",
+      };
+      //Send Post request to backend
+      fetch("http://localhost:5000/3000", {
+        method: "POST", //HTTP method
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), //Convert data to JSON
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "failure") {
+            //If the response is a failure, display the error message
+            alert("failed")
+          } else {
+            alert('suc')
+            }
+        })
+  
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    
+}
 export function AdminLogin(){
 
     const [backgroundColor] = useGlobalState("backgroundColor");
     const [headerColor] = useGlobalState("headerColor");
     const [wordColor] = useGlobalState("wordColor");
-    const [result] = useState([]);
+    const [result,setResult] = useState([]);
     function handleRefresh(){
         const dataSalt={
             type:"GetChangePassReqs"
@@ -105,7 +121,7 @@ export function AdminLogin(){
               if (data.status === "failure") {
                 alert("failed")
               } else {
-                alert(data.result)
+                setResult(data.result)
               }
             })
                   .catch((error) => {
@@ -122,13 +138,46 @@ export function AdminLogin(){
                     ADMIN VIEW
                 </header>
                 
-                <div className="box">
+                <div className="box" style={{justifyContent:'center',alignItems:'center'}}>
                     <div>
-                        <RefreshButton handleRefresh={handleRefresh} col={backgroundColor}/>
+                        <RefreshButton handleRefresh={handleRefresh} col={backgroundColor}/>                                            
                     </div>
-                    {result.map((item, index) => (
-                        <h1>hello</h1>
-                    ))}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '10px', overflowY: 'scroll', padding: '10px' ,alignItems:'center',justifyContent:'center',msOverflowStyle:'none',scrollbarWidth:'none'}}>
+                        {result.map((item, index) => (
+                            <div
+                            key={index}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                padding: '15px',
+                                border: '1px solid #ccc',
+                                borderRadius: '8px',
+                                backgroundColor: '#f9f9f9',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                            }}
+                            >
+                            <span style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>{item[0]}</span>
+                            <button
+                                onClick={() => approveRequest()}
+                                style={{
+                                padding: '8px 16px',
+                                backgroundColor: backgroundColor,
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                fontSize: '14px',
+                                }}
+                            >
+                                Approve
+                            </button>
+                            </div>
+                        ))}
+                    </div>
+
+
+
                 </div>
             </div>
         </div>

@@ -15,7 +15,6 @@ export function ResetPasswordForm() {
     const [headerCol] = useGlobalState("headerColor");
   
     const [username, setUsername] = useState("");
-    const [hashedUser, setHashedUser] = useState("");
     const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
     const [errorMessageUser, setErrorMessageUser] = useState("");
   
@@ -77,7 +76,7 @@ export function ResetPasswordForm() {
   
       //Prepare data for submission to SQL database
       const data = {
-        username: hashedUser,
+        username: username,
         password: hashedPass,
         email: emailExists,
         type: "changePassword",
@@ -109,7 +108,6 @@ export function ResetPasswordForm() {
     function handleChangeUser(e) {
       const user = e.target.value;
       setUsername(user);
-      setHashedUser(CryptoJS.SHA256(user).toString()); // Hash the username
       
       //Validate the username length
       if (username.length < 6) { // If the username is less than 6 characters, set the error message

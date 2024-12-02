@@ -21,7 +21,6 @@ export function SignInForm() {
     const [wordColor] = useGlobalState("wordColor");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
-    const [hashedUser, setHashedUser] = useState("");
     const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
     const [errorMessageUser, setErrorMessageUser] = useState("");
     const [errorMessageExistsPass, setErrorMessageExistsPass] = useState(false);
@@ -35,7 +34,7 @@ export function SignInForm() {
     function submit(hash){
       //Prepare data for submission to SQL database
       const data = {
-        username: hashedUser,
+        username: username,
         password: hash,
         email: emailExists,
         type: "signin",
@@ -59,7 +58,7 @@ export function SignInForm() {
             //login success
             setGlobalState("authenticated", true);
             setGlobalState("usesEmail", emailExists); //tracks if email already exists
-            setGlobalState("account", hashedUser);
+            setGlobalState("account", username);
             setCookie('authToken', data.token, 15); //Set the authentication token in cookies
             setLoginFail(false);
             setGotoMainPage(true); //Redirect to the main page
@@ -86,12 +85,12 @@ export function SignInForm() {
         return;
       }
       if (username.includes(".ADMIN") ===true){
-        adminPost(hashedUser,password);
+        adminPost(username,password);
         return;
       }
 
       const dataSalt={
-        username: hashedUser,
+        username: username,
         email: emailExists,
         type: "salt",
       };
@@ -114,7 +113,7 @@ export function SignInForm() {
           } else {
             //login success
             setGlobalState("usesEmail", emailExists); //tracks if email already exists
-            setGlobalState("account", hashedUser);
+            setGlobalState("account", username);
             const p=data.salt+password;
             let hash=(CryptoJS.SHA256(p).toString()); //Hash the username
             submit(hash);
@@ -142,7 +141,6 @@ export function SignInForm() {
     function handleChangeUser(e) {
       const user = e.target.value;
       setUsername(user); //Update the username state
-      setHashedUser(CryptoJS.SHA256(user).toString()); //Hash the username
       
       //checks username length
       if (username.length < 6) {

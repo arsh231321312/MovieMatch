@@ -18,8 +18,6 @@ export function SignUpForm() {
     const [password, setPass] = useState("");
     const [email, setEmail] = useState("");
     const [PasswordRepeat, setPassRepeat] = useState("");
-    const [hashedUser, setHashedUser] = useState("");//Hashed username
-    const [hashedEmail, setHashedEmail] = useState(""); //Hashed email
     const [errorMessageExistsEmail, setErrorMessageExistsEmail] = useState(false);
     const [errorMessageEmail, setErrorMessageEmail] = useState("");
     const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
@@ -111,9 +109,9 @@ export function SignUpForm() {
 
       //Prepare data for SQL Database
       const data = {
-        username: hashedUser,
+        username: username,
         password: hashedpass,
-        email: hashedEmail,
+        email: email,
         salt: salt,
         type: "register",
       };
@@ -134,7 +132,7 @@ export function SignUpForm() {
             setLoginFailMSG(data.message);
           } else {//If the response is a success hashes user and moves them to the main page
             setGlobalState("authenticated", true);
-            setGlobalState("account", hashedUser);
+            setGlobalState("account", username);
             setLoginFail(false);
             setGotoMainPage(true);
             setCookie('authToken', data.token, 15);
@@ -150,14 +148,12 @@ export function SignUpForm() {
     function handleChangeUser(e) {
       const user = e.target.value;//Grabs input value
       setUser(user); //Sets the user state to the input value
-      setHashedUser(CryptoJS.SHA256(user).toString());//Hashes the username w/ SHA256
     }
   
     // Check if the email contains "@" and update the error message state
     function handleChangeEmail(e) {
       const email = e.target.value;
       setEmail(email);
-      setHashedEmail(CryptoJS.SHA256(email).toString());
       if (email.includes("@") === true) { //If the email contains an @ symbol
         setErrorMessageExistsEmail(false);
       }

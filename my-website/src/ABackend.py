@@ -161,59 +161,20 @@ def handling_data():
             connection.close()
             return jsonify({"status": "failure", "message": "Change password failed, Account does not exists"})
         salt=result[0]
-        if email == True:
-            insert_query = """
-            insert into passReq (email_hash,salt,passwordChangeReq)
-            values (%s, %s, %s);
-            """
-            cursor.execute(insert_query, (username, salt, password))
-            connection.commit()
-            cursor.close()
-            # Close the connection when done
-            connection.close()
-            rows_affected = cursor.rowcount
-            # update_query = """
-            # UPDATE users
-            # SET password_hash = %s
-            # WHERE email_hash = %s;
-            # """
-            # cursor.execute(update_query, (password, username))
-            # connection.commit()
-            # cursor.close()
-            # # Close the connection when done
-            # connection.close()
-            # rows_affected = cursor.rowcount
-            if rows_affected==0:
-                return jsonify({"status": "failure", "message": "Change password failed, email does not exist"})
-            else:
-                return jsonify({"status": "success", "message": "Password changed!"})
+        insert_query = """
+        insert into passReq (username,email_exists,salt,passwordChangeReq)
+        values (%s,%s, %s, %s);
+        """
+        cursor.execute(insert_query, (username, email,salt, password))
+        connection.commit()
+        cursor.close()
+        # Close the connection when done
+        connection.close()
+        rows_affected = cursor.rowcount
+        if rows_affected==0:
+            return jsonify({"status": "failure", "message": "Change password failed, email does not exist"})
         else:
-            insert_query = """
-            insert into passReq (username_hash,salt,passwordChangeReq)
-            values (%s, %s, %s);
-            """
-            cursor.execute(insert_query, (username, salt, password))
-            connection.commit()
-            cursor.close()
-            # Close the connection when done
-            connection.close()
-            rows_affected = cursor.rowcount
-
-            # update_query = """
-            # UPDATE users
-            # SET password_hash = %s
-            # WHERE username_hash = %s;
-            # """
-            # cursor.execute(update_query, (password, username))
-            # connection.commit()
-            # cursor.close()
-            # # Close the connection when done
-            # connection.close()
-            # rows_affected = cursor.rowcount
-            if rows_affected==0:
-                return jsonify({"status": "failure", "message": "Change password failed, username does not exist"})
-            else:
-                return jsonify({"status": "success", "message": "Password changed!"})
+            return jsonify({"status": "success", "message": "Password Request sent!"})
     elif (type == 'LetterUser'):
 
         movie=get_random_movie(data.get('username'))
@@ -261,23 +222,18 @@ def handling_data():
         return jsonify({"status":"success", "message": "not finished"})
     elif (type=="GetChangePassReqs"):
         select_query = """
-        SELECT username_hash,email_hash,salt,passwordChangeReq FROM passreq;
+        SELECT username,email_exists,salt,passwordChangeReq FROM passreq;
         """
         cursor.execute(select_query)
-        result = cursor.fetchall()
-        result=list(result[0])
-        data=[]
-        for r in result:
-            pass
+        result = cursor.fetchall()        
         cursor.close()
         connection.close()
-        print(result)
-
         return jsonify({"status":"success","message" : "Got requests","result":result})
+    elif (type == "ADMINAPPROVE"):
+        return jsonify({"status":"success","message" : "Got requests"})
     else:
         return jsonify({"status": "failure", "message": "Sign up failed, due to an error on our end please make a ticket or send an email to Arsh.singh.sandhu1@gmail.com"})
     
-
 
 
            
