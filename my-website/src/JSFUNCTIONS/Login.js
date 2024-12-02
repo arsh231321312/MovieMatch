@@ -109,7 +109,6 @@ export function SignInForm() {
             setGotoMainPage(false);
             setLoginFailMSG(data.message);
             setLoginFail(true);
-            alert("failed")
           } else {
             //login success
             setGlobalState("usesEmail", emailExists); //tracks if email already exists

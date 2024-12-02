@@ -135,6 +135,10 @@ export function AdminLogin(){
               console.error("Error:", error);
             });
     }
+    const s = {
+        cursor: 'pointer',
+        padding: '8px',
+      };
     return (
         <div>
             {/* Main page container with dynamic background color */}
@@ -147,7 +151,7 @@ export function AdminLogin(){
                 
                 <div className="box" style={{justifyContent:'center',alignItems:'center'}}>
                     <div>
-                        <RefreshButton handleRefresh={handleRefresh} col={backgroundColor}/>                                            
+                        <RefreshButton handleRefresh={handleRefresh} col={backgroundColor} s={s}/>                                            
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '10px', overflowY: 'scroll', padding: '10px' ,alignItems:'center',justifyContent:'center',msOverflowStyle:'none',scrollbarWidth:'none'}}>
                         {result.map((item, index) => (

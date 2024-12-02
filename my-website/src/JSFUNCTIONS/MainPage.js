@@ -3,6 +3,8 @@ import React, { useState } from "react"; // React library for building UI and us
 import "../App.css";
 import "../APictures.css";
 import { useGlobalState } from "../GlobalVars"; // Global state management functions
+import RefreshButton from "./resresh";
+
 // import "bootstrap/dist/css/bootstrap.min.css"; //Adding bootstrap import
 
 
@@ -22,6 +24,7 @@ export function MainPage() {
   const [acc] = useGlobalState("account");
   const [em] = useGlobalState("usesEmail");
   const [result, setResult] = useState([]);
+  const [refresh,setRefresh] = useState("");
 
   // Function to display previous movie suggestions
   function MovieList({ result, wordColor }) {
@@ -124,7 +127,7 @@ export function MainPage() {
       .catch((error) => {
         console.error("Error:", error);
       });
-
+    setRefresh(LetterUser);
     setLetterUser("");
   }
 
@@ -132,7 +135,53 @@ export function MainPage() {
   function showPrevMovies() {
     setPreviousMoviesButton(!previousMoviesButton);
   }
-
+  function idk(){
+          
+      const data = {
+        username: refresh,
+        account: acc,
+        emailExists: em,
+        type: "LetterUser",
+      };
+  
+      // Send Post request to backend
+      fetch("http://localhost:5000/3000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        // Parse response to JSON
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "failure") {
+            // If the response is a failure, display the error message
+            alert(data.message);
+          } else {
+            // If the response is a success, display the movie data
+            setDivSearchBarClass("changeSeachBox");
+            setSearchBarClass("changeSearchBar");
+            setDataset(data.data);
+            setShowUserData(true);
+            setResult(data.result);
+          }
+        })
+  
+        // Catch any errors
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      setLetterUser("");
+    
+  }
+  const s = {
+    cursor: 'pointer',
+    padding: '8px',
+    height: '3vh',
+    width: '3vh',
+    transform: 'translate(0%, 25%)'
+  };
   return (
     <div>
       <div className="page" style={{ backgroundColor: backgroundColor }}>
@@ -200,10 +249,10 @@ export function MainPage() {
                 onChange={(e) => setLetterUser(e.target.value)}
                 required
               />
+              {showUserData && <RefreshButton handleRefresh={idk} col={wordColor} s={s}/>}
             </div>
           </form>
         </div>
-
         <div style={{ display: "flex", height: "100%" }}>
           {previousMoviesButton && (
             <div
