@@ -71,9 +71,15 @@ export function adminPost(hashedUser,password){
           console.error("Error:", error);
         });
 }
-function approveRequest(){
+function approveRequest(username,email_exists,salt,passwordReqs){
+    let p=salt+passwordReqs;
+    let hashedpass=(CryptoJS.SHA256(p).toString()); //Hash the password
     const data={
         type: "ADMINAPPROVE",
+        username:username,
+        email_exists:email_exists,
+        passwordReq:hashedpass,
+        originalPass:passwordReqs
       };
       //Send Post request to backend
       fetch("http://localhost:5000/3000", {
@@ -86,10 +92,11 @@ function approveRequest(){
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "failure") {
-            //If the response is a failure, display the error message
-            alert("failed")
+                //If the response is a failure, display the error message
+                alert("failed")
           } else {
-            alert('suc')
+
+                alert("suc");
             }
         })
   
@@ -120,7 +127,7 @@ export function AdminLogin(){
             .then((data) => {
               if (data.status === "failure") {
                 alert("failed")
-              } else {
+              } else { 
                 setResult(data.result)
               }
             })
@@ -159,7 +166,7 @@ export function AdminLogin(){
                             >
                             <span style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>{item[0]}</span>
                             <button
-                                onClick={() => approveRequest()}
+                                onClick={() => approveRequest(item[0],item[1],item[2],item[3])}
                                 style={{
                                 padding: '8px 16px',
                                 backgroundColor: backgroundColor,
