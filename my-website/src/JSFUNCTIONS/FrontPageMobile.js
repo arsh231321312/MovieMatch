@@ -109,7 +109,9 @@ export function FrontPageMobile() {
             </div>
           </header>
   
-          {/*Centered message below the header */}
+
+                
+          {/* Centered message below the header
           <h3
             style={{
               color: "#f0eee9",
@@ -123,10 +125,10 @@ export function FrontPageMobile() {
             WOOOOOO!!
           </h3>
   
-          {/* Display viewport dimensions */}
+           Display viewport dimensions 
           <h3>
             {viewportHeight} x {viewportWidth}
-          </h3>
+          </h3> */}
         </div>
       </div>
     );

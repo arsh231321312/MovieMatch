@@ -4,7 +4,6 @@ that is generated to you */
 /* This is the font for the front page */
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-
 /* Fixes the screen to be max instead of adding the left
 and right scroll bar */
 
@@ -38,7 +37,6 @@ and right scroll bar */
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-
 }
 
 .App-link {
@@ -60,7 +58,6 @@ and right scroll bar */
   color: red;
 }
 
-
 .box {
   min-width: 400px;
   min-height: 400px;
@@ -73,6 +70,7 @@ and right scroll bar */
   height:auto;
   width: auto;
 }
+
 .page {
   text-align: center;
   margin: auto;
@@ -81,22 +79,18 @@ and right scroll bar */
   background-color: #1f2532;
 }
 
-
 .divInputBox{
   position: relative;
   height: 41px;
 }
 
 .inputBox{
-    width: 80%;
-    margin-bottom: 5px; 
-    height: 25px;
-    border-radius: 5px;
-    border: none;
-
+  width: 80%;
+  margin-bottom: 5px; 
+  height: 25px;
+  border-radius: 5px;
+  border: none;
 }
-
-
 
 .form{
   position: relative;
@@ -105,7 +99,6 @@ and right scroll bar */
   font-size: 16px;
   margin-right: 0px;
   border-radius: 4px;
-  
 }
 
 .errorMSG{
@@ -128,9 +121,6 @@ and right scroll bar */
 
 .divExistingACC{
   text-align:center;
-  /* left: 50%;
-  top: 82.5%;
-  transform: translate(-50%, 50%); */
   font-size: 14px;
 }
 
@@ -151,7 +141,8 @@ and right scroll bar */
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100vw;
+  width: 100%;
+  box-sizing: border-box;
   height: 8vh;
   padding: 10px;
 }
@@ -171,9 +162,9 @@ and right scroll bar */
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    
   }
 }
+
 .movieMatchIcon{
   width: 100px;
   height: 100px;
@@ -194,8 +185,8 @@ and right scroll bar */
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-
 }
+
 .searchBar{
   height: 6.5vh;
   width: 50vw;
@@ -212,7 +203,6 @@ and right scroll bar */
   padding: 2vh;
   left: 11vw;
   position: relative;
-
 }
 
 .changeSearchBar{
@@ -253,11 +243,6 @@ and right scroll bar */
   padding: 10px;
 }
 
-/* .prevMovieText{
-  font-size: 16px;
-  padding: 20px;
-} */
-
 /* Hide scrollbar for WebKit browsers */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -290,26 +275,158 @@ and right scroll bar */
   .frontPageTitle {
     display: flex;
     justify-content: flex-start;
-
   }
 }
 
+/* New styles for the Hero Section and Call-to-Action */
+.gradient{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*background-image: url('./pictures/MovieMatchIcon.png');  Optional background image */
+  background-size: cover;
+  background-position: center;
+  height: 60%;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  background: linear-gradient(90deg, rgb(7, 0, 15),rgba(2, 29, 58, 0.461),rgba(2, 29, 58, 0.461),rgba(2, 29, 58, 0.461),rgb(7, 0, 15));
 
-@media (max-width:800px){ 
-  .poster{
-    padding: "10px";
-    width: 250px;
-    height: 375px;
-    border-radius: 15px;
-    box-shadow: 3px 3px 3px 3px black;
-    padding-bottom: "20px";
-  }
 }
-@media (min-width:799px){
-  .poster{
-    padding: "10px";
-    border-radius: 15px;
-    box-shadow: 3px 3px 3px 3px black;
-    padding-bottom: "20px";
-  }
+
+.hero{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #00151b;
+  border-radius: 15px;
+  padding-bottom: 0px;
 }
+
+.hero-content {
+  background: transparent;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.hero h1 {
+  color: #c5c1c1;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  
+}
+
+.movie-poster {
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.MainContentText{
+  padding: 10px;
+  padding-bottom: 20px;
+  padding-top: 0px;
+  color: white;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.cta-button {
+  background-color: #00dd00;
+  font-family: 'Ubuntu', sans-serif;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.5em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-center;
+  align-items: center;
+  margin-top: 0;
+}
+
+.cta-button:hover {
+  background-color: #00aa00;
+}
+
+.movie-list {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 220px);
+  padding-bottom: 0;
+  gap: 20px;
+  padding: 20px;
+  padding-top: 0;
+}
+
+.movie-card {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+}
+
+.movie-poster {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.movie-card h3 {
+  margin: 10px 0 5px 0;
+  font-size: 1.2rem;
+}
+
+.movie-card p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+#MovieMatchTitle{
+  color: white;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 900;
+  font-size: 4rem;
+  margin-bottom: 0px;
+}
+
+.MovieMatchParagraph{
+  color: rgb(226, 222, 222);
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  padding-top: 0;
+  padding-bottom: 10px;
+}
+
+#secondaryText{
+  color: rgb(160, 158, 158);
+  padding-bottom: 30px;
+  margin-bottom: 0;
+}
+/* In your App.css or a global CSS file */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#TMDB-Logo{
+  width: 200px;
+  height: 30px;
+  padding: 10px;
+  display:flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin: 0;
+} 
