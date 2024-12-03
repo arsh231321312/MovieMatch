@@ -164,17 +164,18 @@ export function AdminLogin(){
                                 padding: '15px',
                                 border: '1px solid #ccc',
                                 borderRadius: '8px',
-                                backgroundColor: '#f9f9f9',
+                                backgroundColor: backgroundColor,
+                                
                                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                             }}
                             >
-                            <span style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>{item[0]}</span>
+                            <span style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px',color:wordColor }}>{item[0]}</span>
                             <button
                                 onClick={() => approveRequest(item[0],item[1],item[2],item[3])}
                                 style={{
                                 padding: '8px 16px',
-                                backgroundColor: backgroundColor,
-                                color: '#fff',
+                                backgroundColor: headerColor,
+                                color: wordColor,
                                 border: 'none',
                                 borderRadius: '4px',
                                 cursor: 'pointer',
