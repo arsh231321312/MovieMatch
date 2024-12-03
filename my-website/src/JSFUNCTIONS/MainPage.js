@@ -219,6 +219,8 @@ export function MainPage() {
                   justifyContent: "flex-start",
                   left: "15vw",
                   transform: "translate(0,-50%)",
+                  backgroundColor: headerCol,
+                  color: wordColor
                 }}
                 onClick={showPrevMovies}
               >
@@ -332,7 +334,7 @@ export function MainPage() {
                       <p style={{ color: wordColor, maxWidth: "100vw" }}>
                         {dataset["description"]}
                       </p>
-                      <ExternalLink url={dataset["whereToWatch"]} />
+                      <ExternalLink url={dataset["whereToWatch"]} color={wordColor}/>
                     </div>
                   </div>
                   <VideoPlayer  src={dataset["trailer"]} />
@@ -378,15 +380,15 @@ function VideoPlayer({ src }) {
 }
 
 // Component for the external link
-function ExternalLink({ url }) {
+function ExternalLink({ url,color }) {
   return (
     <div>
-      <h1 style={{ color: "white" }}>Where To Watch</h1>
+      <h1 style={{ color: color }}>Where To Watch</h1>
       <a
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ color: "white" }}
+        style={{ color: color }}
       >
         Visit External Site
       </a>

@@ -180,7 +180,7 @@ export function SignInForm() {
   
     //Render the sign-in form 
     return (
-      <div className="page" >
+      <div className="page" style={{ backgroundColor: backgroundColor }}>
         
         {/* Redirect the user to the main page if authentication cookies exist or login succeeds */}
         {ADMIN && <Navigate to="/ADMIN"/>}
