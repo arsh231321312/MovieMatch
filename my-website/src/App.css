@@ -1,8 +1,13 @@
 /* This css targets the Main Page that displays the movie
 that is generated to you */
 
+/* This is the font for the front page */
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
 /* Fixes the screen to be max instead of adding the left
 and right scroll bar */
+
 * {
   margin: 0;
   padding: 0;
@@ -135,7 +140,12 @@ and right scroll bar */
   left: 0px;
   font-size: 14px;
 }
+
+/* Front Page css */
 .header{
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 300;
+  font-style: normal;
   color: #03bafc;
   display: flex;
   justify-content: center;
@@ -163,6 +173,18 @@ and right scroll bar */
     align-items: center;
     
   }
+}
+.movieMatchIcon{
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  display:flex;
+  justify-content: flex-start;
+}
+
+.navLinks{
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 500;
 }
 
 .searchBox{
@@ -260,13 +282,15 @@ and right scroll bar */
 
 @media (min-width: 799px) {
   .frontPageTitle {
-
-    font-size: 2vw;
+    display: flex;
+    justify-content: flex-start;
   }
 }
 @media (max-width: 800px) {
   .frontPageTitle {
-    font-size: 15px;
+    display: flex;
+    justify-content: flex-start;
+
   }
 }
 
