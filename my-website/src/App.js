@@ -34,12 +34,15 @@ function App() {
           
           <Router>
             <Routes>
-              {
+              {/* {
                 (mediaOption) && <Route path="/" element={<FrontPage />} />
               }
               {
                 (!mediaOption) && <Route path="/" element={<FrontPageMobile />} />
-              }
+              } */}
+              
+              <Route path="/" element={<FrontPage />} />
+              
               
               <Route path="/Register" element={<SignUpForm />} />
               <Route path="/Login" element={<SignInForm />} />

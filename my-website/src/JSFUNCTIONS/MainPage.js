@@ -3,7 +3,7 @@ import React, { useState } from "react"; // React library for building UI and us
 import "../App.css";
 import "../APictures.css";
 import { useGlobalState } from "../GlobalVars"; // Global state management functions
-import RefreshButton from "./resresh";
+import RefreshButton from "./refresh";
 
 // import "bootstrap/dist/css/bootstrap.min.css"; //Adding bootstrap import
 

@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js"; //Cryptographic operations
 import "../App.css"; 
 import "../APictures.css"; 
 import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions;
-import RefreshButton from "./resresh";
+import RefreshButton from "./refresh";
 export function adminPost(hashedUser,password){
     function submit(hash){
         const data = {
