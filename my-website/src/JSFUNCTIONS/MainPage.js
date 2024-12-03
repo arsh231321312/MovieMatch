@@ -180,7 +180,6 @@ export function MainPage() {
     padding: '8px',
     height: '3vh',
     width: '3vh',
-    transform: 'translate(0%, 25%)'
   };
   return (
     <div>
