@@ -45,9 +45,9 @@ export function FrontPage() {
       <div className="page" style={{ backgroundColor: backgroundColor }}>
         <Navbar/>
 
-        <h1 className="gradient" id="MovieMatchTitle">Welcome to Movie Match</h1>
-        <h2 className="gradient MovieMatchParagraph" style={{ fontWeight: "500" }}>Never know what to watch? We've got you</h2>
-        <h3 className="gradient MovieMatchParagraph" id="secondaryText">Connect to your LetterBoxd Watchlist<br />Pull the movies you want to watch<br />It's a match</h3>
+        <h1 style={{color:wordColor}} className="gradient" id="MovieMatchTitle">Welcome to Movie Match</h1>
+        <h2 className="gradient MovieMatchParagraph" style={{ fontWeight: "500" ,color:wordColor}}>Never know what to watch? We've got you</h2>
+        <h3 className="gradient MovieMatchParagraph" id="secondaryText" style={{color:wordColor}}>Connect to your LetterBoxd Watchlist<br />Pull the movies you want to watch<br />It's a match</h3>
         <div className="gradient" style={{ margin: "0", paddingTop: "0px", paddingBottom: "0px" }}>
           <Link className="cta-button" to="/Register" style={{ textDecoration: "none" }}>
             Ready? Set. Match!

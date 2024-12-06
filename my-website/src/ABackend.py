@@ -260,6 +260,22 @@ def handling_data():
         if rows_affected==0:
             return jsonify({"status":'failure',"message":'failed bruhhh'})
         return jsonify({"status":"success","message" : "Got requests"})
+    elif (type=='ADMINDISAPPROVE'):
+
+        username=data.get('username')
+        emailExists = str(data.get('email_exists'))
+        passwordReq=data.get('passwordReq')
+        originalPass=data.get('originalPass')
+        delete_query = """
+        delete from passreq where username=%s and email_exists = %s and passwordChangeReq=%s;
+        """
+        cursor.execute(delete_query, (username,emailExists,originalPass))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        if rows_affected==0:
+            return jsonify({"status":'failure',"message":'failed bruhhh'})
+        return jsonify({"status":"success","message" : "Got requests"})
     else:
         cursor.close()
         connection.close()

@@ -5,6 +5,7 @@ import "../App.css";
 import "../APictures.css"; 
 import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions;
 import RefreshButton from "./refresh";
+
 export function adminPost(hashedUser,password){
     function submit(hash){
         const data = {
@@ -71,6 +72,37 @@ export function adminPost(hashedUser,password){
           console.error("Error:", error);
         });
 }
+function disApproveRequest(username,email_exists,salt,passwordReqs){
+  let p=salt+passwordReqs;
+  let hashedpass=(CryptoJS.SHA256(p).toString()); //Hash the password
+  const data={
+      type: "ADMINAPPROVE",
+      username:username,
+      email_exists:email_exists,
+      passwordReq:hashedpass,
+      originalPass:passwordReqs
+    };
+    //Send Post request to backend
+    fetch("http://localhost:5000/3000", {
+      method: "POST", //HTTP method
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data), //Convert data to JSON
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "failure") {
+              //If the response is a failure, display the error message
+              alert("failed")
+        }
+      })
+
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  
+}
 function approveRequest(username,email_exists,salt,passwordReqs){
     let p=salt+passwordReqs;
     let hashedpass=(CryptoJS.SHA256(p).toString()); //Hash the password
@@ -94,10 +126,7 @@ function approveRequest(username,email_exists,salt,passwordReqs){
           if (data.status === "failure") {
                 //If the response is a failure, display the error message
                 alert("failed")
-          } else {
-
-                alert("suc");
-            }
+          }
         })
   
         .catch((error) => {
@@ -170,20 +199,38 @@ export function AdminLogin(){
                             }}
                             >
                             <span style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px',color:wordColor }}>{item[0]}</span>
-                            <button
-                                onClick={() => approveRequest(item[0],item[1],item[2],item[3])}
-                                style={{
-                                padding: '8px 16px',
-                                backgroundColor: headerColor,
-                                color: wordColor,
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '14px',
-                                }}
-                            >
-                                Approve
-                            </button>
+                            <div style={{gap:'4px',display:'flex',flexDirection:'row'}}>
+                              <button
+                                  onClick={() => approveRequest(item[0],item[1],item[2],item[3])}
+                                  style={{
+                                  flex:1,
+                                  padding: '8px 16px',
+                                  backgroundColor: headerColor,
+                                  color: wordColor,
+                                  border: 'none',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  }}
+                              >
+                                  Accept
+                              </button>
+                              <button
+                                  onClick={() => disApproveRequest(item[0],item[1],item[2],item[3])}
+                                  style={{
+                                  flex:1,
+                                  padding: '8px 21px',
+                                  backgroundColor: headerColor,
+                                  color: wordColor,
+                                  border: 'none',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  }}
+                              >
+                                  Deny
+                              </button>
+                            </div>
                             </div>
                         ))}
                     </div>
