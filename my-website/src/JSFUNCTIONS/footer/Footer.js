@@ -1,11 +1,20 @@
 // import React from "react";
-import '../../App.css';
+import "../../App.css";
 
 const Footer = () => {
   const team = [
-    { name: "Arshdeep Sandhu", linkedin: "https://www.linkedin.com/in/arshdeep-sandhu-8a95a12b8/" },
-    { name: "Katherine Raguini", linkedin: "https://www.linkedin.com/in/katherine-raguini-student/" },
-    { name: "Reynaldo Guerra", linkedin: "https://www.linkedin.com/in/reynaldo-guerra/" },
+    {
+      name: "Arshdeep Sandhu",
+      linkedin: "https://www.linkedin.com/in/arshdeep-sandhu-8a95a12b8/",
+    },
+    {
+      name: "Katherine Raguini",
+      linkedin: "https://www.linkedin.com/in/katherine-raguini-student/",
+    },
+    {
+      name: "Reynaldo Guerra",
+      linkedin: "https://www.linkedin.com/in/reynaldo-guerra/",
+    },
   ];
 
   return (
@@ -14,7 +23,12 @@ const Footer = () => {
       <ul style={styles.list}>
         {team.map((member, index) => (
           <li key={index} style={styles.listItem}>
-            <a href={member.linkedin} style={styles.link} target="_blank" rel="noopener noreferrer">
+            <a
+              href={member.linkedin}
+              style={styles.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {member.name}
             </a>
           </li>

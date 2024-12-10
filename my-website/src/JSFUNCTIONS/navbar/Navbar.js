@@ -61,7 +61,13 @@ const Navbar = () => {
       }}
     >
       {/* Movie Match Icon and title */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent:"flex-end"}}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}
+      >
         <img
           src={MovieMatchIcon}
           alt="Movie Match Icon"
@@ -77,7 +83,11 @@ const Navbar = () => {
       {isMobile ? (
         <>
           <div onClick={toggleDropdown} style={{ cursor: "pointer" }}>
-            <img src={menu} alt="menu icon" style={{ width: "30px", paddingRight:"0"}} />
+            <img
+              src={menu}
+              alt="menu icon"
+              style={{ width: "30px", paddingRight: "0" }}
+            />
           </div>
           {isDropdownOpen && (
             <Dropdown>
@@ -135,7 +145,6 @@ const Navbar = () => {
             />
           </div>
         </div>
-        
       )}
     </header>
   );

@@ -7,7 +7,6 @@ import RefreshButton from "./refresh";
 
 // import "bootstrap/dist/css/bootstrap.min.css"; //Adding bootstrap import
 
-
 // Component for the main page
 export function MainPage() {
   const isMobile = window.innerWidth <= 600;
@@ -24,7 +23,7 @@ export function MainPage() {
   const [acc] = useGlobalState("account");
   const [em] = useGlobalState("usesEmail");
   const [result, setResult] = useState([]);
-  const [refresh,setRefresh] = useState("");
+  const [refresh, setRefresh] = useState("");
 
   // Function to display previous movie suggestions
   function MovieList({ result, wordColor }) {
@@ -81,7 +80,11 @@ export function MainPage() {
                 style={{ height: "200px", maxWidth: "200px" }}
               />
             )}
-            {item[1] && <p class="prevMovieText" style={{ fontSize: "15px" }}>{item[1]}</p>}
+            {item[1] && (
+              <p class="prevMovieText" style={{ fontSize: "15px" }}>
+                {item[1]}
+              </p>
+            )}
           </h1>
         ))}
       </div>
@@ -135,51 +138,49 @@ export function MainPage() {
   function showPrevMovies() {
     setPreviousMoviesButton(!previousMoviesButton);
   }
-  function idk(){
-          
-      const data = {
-        username: refresh,
-        account: acc,
-        emailExists: em,
-        type: "LetterUser",
-      };
-  
-      // Send Post request to backend
-      fetch("http://localhost:5000/3000", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+  function idk() {
+    const data = {
+      username: refresh,
+      account: acc,
+      emailExists: em,
+      type: "LetterUser",
+    };
+
+    // Send Post request to backend
+    fetch("http://localhost:5000/3000", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      // Parse response to JSON
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "failure") {
+          // If the response is a failure, display the error message
+          alert(data.message);
+        } else {
+          // If the response is a success, display the movie data
+          setDivSearchBarClass("changeSeachBox");
+          setSearchBarClass("changeSearchBar");
+          setDataset(data.data);
+          setShowUserData(true);
+          setResult(data.result);
+        }
       })
-        // Parse response to JSON
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "failure") {
-            // If the response is a failure, display the error message
-            alert(data.message);
-          } else {
-            // If the response is a success, display the movie data
-            setDivSearchBarClass("changeSeachBox");
-            setSearchBarClass("changeSearchBar");
-            setDataset(data.data);
-            setShowUserData(true);
-            setResult(data.result);
-          }
-        })
-  
-        // Catch any errors
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-      setLetterUser("");
-    
+
+      // Catch any errors
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    setLetterUser("");
   }
   const s = {
-    cursor: 'pointer',
-    padding: '8px',
-    height: '3vh',
-    width: '3vh',
+    cursor: "pointer",
+    padding: "8px",
+    height: "3vh",
+    width: "3vh",
   };
   return (
     <div>
@@ -193,7 +194,10 @@ export function MainPage() {
           }}
         >
           <div>
-            <h1 className="LetterBoxdTitle" style={{ color: wordColor, width: "75vw" }}>
+            <h1
+              className="LetterBoxdTitle"
+              style={{ color: wordColor, width: "75vw" }}
+            >
               LetterBoxd WatchList
             </h1>
           </div>
@@ -211,7 +215,8 @@ export function MainPage() {
           {/* Display previous movie suggestions */}
           {showUserData && (
             <div style={{ marginLeft: "3vw" }}>
-              <button className="prevMoviesButton"
+              <button
+                className="prevMoviesButton"
                 style={{
                   position: "absolute", //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
                   alignItems: "center",
@@ -220,7 +225,7 @@ export function MainPage() {
                   left: "15vw",
                   transform: "translate(0,-50%)",
                   backgroundColor: headerCol,
-                  color: wordColor
+                  color: wordColor,
                 }}
                 onClick={showPrevMovies}
               >
@@ -250,7 +255,9 @@ export function MainPage() {
                 onChange={(e) => setLetterUser(e.target.value)}
                 required
               />
-              {showUserData && <RefreshButton handleRefresh={idk} col={wordColor} s={s}/>}
+              {showUserData && (
+                <RefreshButton handleRefresh={idk} col={wordColor} s={s} />
+              )}
             </div>
           </form>
         </div>
@@ -334,10 +341,13 @@ export function MainPage() {
                       <p style={{ color: wordColor, maxWidth: "100vw" }}>
                         {dataset["description"]}
                       </p>
-                      <ExternalLink url={dataset["whereToWatch"]} color={wordColor}/>
+                      <ExternalLink
+                        url={dataset["whereToWatch"]}
+                        color={wordColor}
+                      />
                     </div>
                   </div>
-                  <VideoPlayer  src={dataset["trailer"]} />
+                  <VideoPlayer src={dataset["trailer"]} />
                 </div>
               )}
             </div>
@@ -354,7 +364,6 @@ function VideoPlayer({ src }) {
   const iframeWidth = isMobile ? "340px" : "560px";
   const iframeHeight = isMobile ? "240px" : "315px";
   <iframe
-
     width={iframeWidth}
     height={iframeHeight}
     src={src}
@@ -380,7 +389,7 @@ function VideoPlayer({ src }) {
 }
 
 // Component for the external link
-function ExternalLink({ url,color }) {
+function ExternalLink({ url, color }) {
   return (
     <div>
       <h1 style={{ color: color }}>Where To Watch</h1>

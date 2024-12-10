@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import "../APictures.css";
 import { setGlobalState, useGlobalState } from "../GlobalVars";
-import Footer from './footer/Footer.js';
+import Footer from "./footer/Footer.js";
 import TMDB from "../pictures/TMDB.svg";
-import Navbar from './navbar/Navbar.js';
+import Navbar from "./navbar/Navbar.js";
 
 export function FrontPage() {
   const [topMovies, settopMovies] = useState([]);
@@ -34,8 +34,6 @@ export function FrontPage() {
     fetchtopMovies();
   }, []);
 
-
-
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -43,19 +41,57 @@ export function FrontPage() {
   return (
     <div>
       <div className="page" style={{ backgroundColor: backgroundColor }}>
-        <Navbar/>
+        <Navbar />
 
-        <h1 style={{color:wordColor}} className="gradient" id="MovieMatchTitle">Welcome to Movie Match</h1>
-        <h2 className="gradient MovieMatchParagraph" style={{ fontWeight: "500" ,color:wordColor}}>Never know what to watch? We've got you</h2>
-        <h3 className="gradient MovieMatchParagraph" id="secondaryText" style={{color:wordColor}}>Connect to your LetterBoxd Watchlist<br />Pull the movies you want to watch<br />It's a match</h3>
-        <div className="gradient" style={{ margin: "0", paddingTop: "0px", paddingBottom: "0px" }}>
-          <Link className="cta-button" to="/Register" style={{ textDecoration: "none" }}>
+        <h1
+          style={{ color: wordColor }}
+          className="gradient"
+          id="MovieMatchTitle"
+        >
+          Welcome to Movie Match
+        </h1>
+        <h2
+          className="gradient MovieMatchParagraph"
+          style={{ fontWeight: "500", color: wordColor }}
+        >
+          Never know what to watch? We've got you
+        </h2>
+        <h3
+          className="gradient MovieMatchParagraph"
+          id="secondaryText"
+          style={{ color: wordColor }}
+        >
+          Connect to your LetterBoxd Watchlist
+          <br />
+          Pull the movies you want to watch
+          <br />
+          It's a match
+        </h3>
+        <div
+          className="gradient"
+          style={{ margin: "0", paddingTop: "0px", paddingBottom: "0px" }}
+        >
+          <Link
+            className="cta-button"
+            to="/Register"
+            style={{ textDecoration: "none" }}
+          >
             Ready? Set. Match!
           </Link>
         </div>
         <div className="gradient">
           <div className="hero">
-            <h1 style={{ display: "flex", justifyContent: "flex-start", paddingLeft: "20px", paddingTop: "20px", fontWeight: "200" }}>Trending Movie Inspiration</h1>
+            <h1
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                paddingLeft: "20px",
+                paddingTop: "20px",
+                fontWeight: "200",
+              }}
+            >
+              Trending Movie Inspiration
+            </h1>
             {topMovies.length > 0 ? (
               <div className="movie-container">
                 <div className="movies-grid">
@@ -73,7 +109,7 @@ export function FrontPage() {
                       )}
                     </div>
                   ))}
-                  <img src={TMDB} alt="TheMovieDatabase Logo" id="TMDB-Logo"/>
+                  <img src={TMDB} alt="TheMovieDatabase Logo" id="TMDB-Logo" />
                 </div>
               </div>
             ) : (
