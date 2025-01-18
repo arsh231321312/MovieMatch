@@ -363,16 +363,7 @@ function VideoPlayer({ src }) {
   const isMobile = window.innerWidth <= 600;
   const iframeWidth = isMobile ? "340px" : "560px";
   const iframeHeight = isMobile ? "240px" : "315px";
-  <iframe
-    width={iframeWidth}
-    height={iframeHeight}
-    src={src}
-    title="Trailer"
-    flexDirection="column"
-    style={{ border: "none" }}
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-  ></iframe>;
+  
   return (
     <div className="video-container">
       <iframe

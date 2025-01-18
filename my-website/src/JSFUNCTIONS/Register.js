@@ -1,6 +1,5 @@
 //Import necessary libraries and components
 import React, { useState } from "react"; // React library for building UI and useState for state management
-import CryptoJS from "crypto-js"; //Cryptographic operations
 import { Link, Navigate } from "react-router-dom"; // Navigation components for routing
 import "../App.css";
 import "../APictures.css";
@@ -8,7 +7,6 @@ import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state 
 import { Box } from "./InputFunctions";
 import { setCookie } from "./Cookie";
 import { PasswordInput, UsernameInput, EmailInput } from "./InputFunctions";
-import bcrypt from "bcryptjs";
 
 export function SignUpForm() {
   //Variables to store user input and validation messages
@@ -34,7 +32,7 @@ export function SignUpForm() {
   // Function to generate a salt
   function generateSalt() {
     const saltRounds = 10;
-    const salt = bcrypt.genSaltSync(saltRounds);
+    const salt = '1'
     return salt;
   }
   /**
@@ -103,7 +101,7 @@ export function SignUpForm() {
     }
     let salt = generateSalt();
     let p = salt + password;
-    let hashedpass = CryptoJS.SHA256(p).toString(); //Hash the password
+    let hashedpass = '1'
 
     //Prepare data for SQL Database
     const data = {

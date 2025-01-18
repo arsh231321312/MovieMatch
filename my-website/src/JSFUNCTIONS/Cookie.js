@@ -1,4 +1,5 @@
 //Import necessary libraries and components
+import React from "react";
 import "../App.css";
 import "../APictures.css";
 import { setGlobalState } from "../GlobalVars"; // Global state management functions
