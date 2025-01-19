@@ -4,7 +4,10 @@ import "../App.css";
 import "../APictures.css";
 import { useGlobalState } from "../GlobalVars"; // Global state management functions
 import RefreshButton from "./refresh";
-
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { getAuth } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
 // import "bootstrap/dist/css/bootstrap.min.css"; //Adding bootstrap import
 
 // Component for the main page
@@ -24,7 +27,8 @@ export function MainPage() {
   const [em] = useGlobalState("usesEmail");
   const [result, setResult] = useState([]);
   const [refresh, setRefresh] = useState("");
-
+  const authentication = getAuth();
+  const postURL ='http://localhost:5000/3000'  //http://localhost:5000/3000
   // Function to display previous movie suggestions
   function MovieList({ result, wordColor }) {
     const [emailExists] = useGlobalState("usesEmail");
@@ -36,7 +40,7 @@ export function MainPage() {
         type: "LoadPrevMovie",
         movieID: movieID,
       };
-      fetch("http://localhost:5000/3000", {
+      fetch(postURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +107,7 @@ export function MainPage() {
     };
 
     // Send Post request to backend
-    fetch("http://localhost:5000/3000", {
+    fetch(postURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,7 +142,7 @@ export function MainPage() {
   function showPrevMovies() {
     setPreviousMoviesButton(!previousMoviesButton);
   }
-  function idk() {
+  function refreshName() {
     const data = {
       username: refresh,
       account: acc,
@@ -176,6 +180,23 @@ export function MainPage() {
       });
     setLetterUser("");
   }
+  const doLogout = async ()=>{
+    console.log(authentication)
+    try{
+      await signOut(auth);
+    }catch(err){
+      console.log(err);
+    }
+  }
+  // const consoleprint = () => {
+  //     onAuthStateChanged(auth, (user) => {
+  //       if (user) {
+  //         console.log(user.uid); // Log the user ID to the console
+  //       } else {
+  //         console.log("No user is signed in.");
+  //       }
+  //     });
+  // };
   const s = {
     cursor: "pointer",
     padding: "8px",
@@ -184,6 +205,7 @@ export function MainPage() {
   };
   return (
     <div>
+      
       <div className="page" style={{ backgroundColor: backgroundColor }}>
         <header
           className="header"
@@ -191,16 +213,16 @@ export function MainPage() {
             backgroundColor: headerCol,
             display: "flex",
             alignItems: "center",
-          }}
+            }}
         >
           <div>
             <h1
-              className="LetterBoxdTitle"
-              style={{ color: wordColor, width: "75vw" }}
+              style={{ color: wordColor, width: "75vw",overflowWrap:'break-word'}}
             >
               LetterBoxd WatchList
             </h1>
           </div>
+          <i onClick={doLogout} class="bi bi-box-arrow-left" style={{color:'white',position:'absolute',right:'1rem',cursor:'pointer'}}></i>
         </header>
         <div>{/* Display previous movie suggestions */}</div>
         <div
@@ -219,9 +241,11 @@ export function MainPage() {
                 className="prevMoviesButton"
                 style={{
                   position: "absolute", //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-                  alignItems: "center",
                   width: "20vw",
-                  justifyContent: "flex-start",
+                  height:'4vh',
+                  display:'flex',
+                  justifyContent: "center",
+                  alignItems: "center",
                   left: "15vw",
                   transform: "translate(0,-50%)",
                   backgroundColor: headerCol,
@@ -243,7 +267,7 @@ export function MainPage() {
               flexDirection: "column",
             }}
           >
-            <div className={divSearchBarClass}>
+            <div className={divSearchBarClass} style={{display:'flex',justifyContent:'center',alignItems:'center'}}> 
               <input
                 value={LetterUser}
                 className={searchBarClass}
@@ -256,7 +280,7 @@ export function MainPage() {
                 required
               />
               {showUserData && (
-                <RefreshButton handleRefresh={idk} col={wordColor} s={s} />
+                <RefreshButton handleRefresh={refreshName} col={wordColor} s={s} />
               )}
             </div>
           </form>
@@ -363,16 +387,7 @@ function VideoPlayer({ src }) {
   const isMobile = window.innerWidth <= 600;
   const iframeWidth = isMobile ? "340px" : "560px";
   const iframeHeight = isMobile ? "240px" : "315px";
-  <iframe
-    width={iframeWidth}
-    height={iframeHeight}
-    src={src}
-    title="Trailer"
-    flexDirection="column"
-    style={{ border: "none" }}
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-  ></iframe>;
+  
   return (
     <div className="video-container">
       <iframe

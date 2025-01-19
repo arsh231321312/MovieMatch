@@ -1,45 +1,28 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-dom';
-import { useGlobalState } from './GlobalVars';
-import { Component, useState } from 'react';
 import {SignInForm} from './JSFUNCTIONS/Login';
 import { SignUpForm } from './JSFUNCTIONS/Register';
 import { FrontPage } from './JSFUNCTIONS/FrontPage';
-import { FrontPageMobile } from './JSFUNCTIONS/FrontPageMobile';
 import { ResetPasswordForm } from './JSFUNCTIONS/ResetPassword';
 import { MainPage } from './JSFUNCTIONS/MainPage';
-import { AdminLogin } from './JSFUNCTIONS/Admin';
+import { useAuth } from "./contexts/authContext/index.jsx";
+// import Header from './components/Header'; // Import the Header component
+// import MainContent from './components/MainContent'; // Import other components
 const ProtectedRoute = ({ element: Component, ...rest }) => {
-  const [isAuthenticated]=useGlobalState('authenticated')
-  return isAuthenticated ? (
-    <Component {...rest} />
-  ) : (
-    <Navigate to="/Login" />
-  );
+  const { userLoggedIn } = useAuth(); // Correctly access userLoggedIn
+  return userLoggedIn ? <Component {...rest} /> : <Navigate to="/Login" />;
 };
-const ProtectedRouteADMIN = ({ element: Component, ...rest }) => {
-  const [ADMIN]=useGlobalState('ADMIN')
-  return ADMIN ? (
-    <Component {...rest} />
-  ) : (
-    <Navigate to="/Login" />
-  );
-};
+
 function App() { 
-    const [mediaOption] = useState(window.innerWidth>800)
+    // const [mediaOption] = useState(window.innerWidth>800)
     return ( 
-      
 
       
         <div >
           
           <Router>
             <Routes>
-              {/* {
-                (mediaOption) && <Route path="/" element={<FrontPage />} />
-              }
-              {
-                (!mediaOption) && <Route path="/" element={<FrontPageMobile />} />
-              } */}
+              
               
               <Route path="/" element={<FrontPage />} />
               
@@ -51,7 +34,6 @@ function App() {
                 path="/mainPage"
                 element={<ProtectedRoute element={MainPage} />}
               />
-              <Route path='/ADMIN' element={<ProtectedRouteADMIN element={AdminLogin}/>} />
             </Routes>
           </Router>
          </div>

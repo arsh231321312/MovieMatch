@@ -3,19 +3,17 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../App.css";
 import "../APictures.css";
-import { setGlobalState, useGlobalState } from "../GlobalVars";
+import {  useGlobalState } from "../GlobalVars";
 import Footer from "./footer/Footer.js";
 import TMDB from "../pictures/TMDB.svg";
-import Navbar from "./navbar/Navbar.js";
+import { NavbarFront } from "./navbar/Navbar.js";
 
 export function FrontPage() {
   const [topMovies, settopMovies] = useState([]);
-  const [error, setError] = useState(null);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const [backgroundColor] = useGlobalState("backgroundColor");
-  const [headerColor] = useGlobalState("headerColor");
-  const [darkMode] = useGlobalState("DarkMode");
+  // const [headerColor] = useGlobalState("headerColor");
+  // const [darkMode] = useGlobalState("DarkMode");
   const [wordColor] = useGlobalState("wordColor");
 
   useEffect(() => {
@@ -26,7 +24,6 @@ export function FrontPage() {
         );
         settopMovies(response.data.results.slice(0, 5)); // Get the top 5 movies
       } catch (err) {
-        setError("Failed to fetch top movies.");
         console.error(err);
       }
     };
@@ -34,14 +31,12 @@ export function FrontPage() {
     fetchtopMovies();
   }, []);
 
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
+
 
   return (
     <div>
       <div className="page" style={{ backgroundColor: backgroundColor }}>
-        <Navbar />
+        <NavbarFront />
 
         <h1
           style={{ color: wordColor }}
@@ -73,7 +68,7 @@ export function FrontPage() {
         >
           <Link
             className="cta-button"
-            to="/Register"
+            to="/Login"
             style={{ textDecoration: "none" }}
           >
             Ready? Set. Match!

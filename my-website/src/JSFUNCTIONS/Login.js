@@ -1,226 +1,133 @@
 //Import necessary libraries and components
 import React, { useState } from "react"; // React library for building UI and useState for state management
-import CryptoJS from "crypto-js"; //Cryptographic operations
 import { Link, Navigate } from "react-router-dom"; // Navigation components for routing
 import "../App.css";
 import "../APictures.css";
-import { setGlobalState, useGlobalState } from "../GlobalVars"; // Global state management functions
+import { useGlobalState } from "../GlobalVars"; // Global state management functions
 import { Box } from "./InputFunctions";
-import { isCookie, setCookie } from "./Cookie";
-import { PasswordInput, UsernameInput } from "./InputFunctions";
-import { adminPost } from "./Admin";
-//Date: 2024-11-15 changed made by: Katherine
-//adding bootstrap import
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Sign-in form component
-
+import { useAuth } from "../contexts/authContext/index.jsx";
+import { doSignInWithEmailAndPassword, doSignInWithGoogle } from "../firebase/auth";
+import eyeClosed from '../pictures/eye_closed.png';
+import {Navbar} from "./navbar/Navbar.js";
 export function SignInForm() {
   const [backgroundColor] = useGlobalState("backgroundColor");
   const [wordColor] = useGlobalState("wordColor");
+  const [headerCol]= useGlobalState('headerColor')
+  const {userLoggedIn} = useAuth();
+
+  const [email,setEmail] = useState('');
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [errorMessageExistsUser, setErrorMessageExistsUser] = useState(false);
-  const [errorMessageUser, setErrorMessageUser] = useState("");
-  const [errorMessageExistsPass, setErrorMessageExistsPass] = useState(false);
-  const [errorMessagePass, setErrorMessagePass] = useState("");
-  const [revealPassword, setRevealPassword] = useState(true);
-  const [emailExists, setEmailExists] = useState(false);
-  const [loginFail, setLoginFail] = useState(false);
-  const [loginFailMSG, setLoginFailMSG] = useState("");
-  const [gotoMainPage, setGotoMainPage] = useState(false);
-  const [ADMIN] = useGlobalState("ADMIN");
-  function submit(hash) {
-    //Prepare data for submission to SQL database
-    const data = {
-      username: username,
-      password: hash,
-      email: emailExists,
-      type: "signin",
-    };
-    //Send Post request to backend
-    fetch("http://localhost:5000/3000", {
-      method: "POST", //HTTP method
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data), //Convert data to JSON
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "failure") {
-          //If the response is a failure, display the error message
-          setGotoMainPage(false);
-          setLoginFailMSG(data.message);
-          setLoginFail(true);
-        } else {
-          //login success
-          setGlobalState("authenticated", true);
-          setGlobalState("usesEmail", emailExists); //tracks if email already exists
-          setGlobalState("account", username);
-          setCookie("authToken", data.token, 15); //Set the authentication token in cookies
-          setLoginFail(false);
-          setGotoMainPage(true); //Redirect to the main page
+  const [isSigningIn,setIsSigningIn] = useState(false);
+  const [errorMessage,setErrorMessage] = useState('')
+  const [type,setType] = useState('password');
+  const [eyeImg,setEyeImg] = useState(eyeClosed);
+  const revealPassword =()=>{
+    if (type==='password'){
+      setType('text')
+      setEyeImg("https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-eye-512.png")
+    }else{
+      setType('password')
+      setEyeImg(eyeClosed)
+
+    }
+  }
+  
+  const handleSubmit = async (e)=>{
+
+    e.preventDefault();
+    setIsSigningIn(false);
+    if (!isSigningIn){
+      setIsSigningIn(true);
+      try{
+      await doSignInWithEmailAndPassword(email,password);
+      }catch(err){
+        if((err.code) === 'auth/invalid-credential'){
+          setErrorMessage("Wrong Username and or password")
+          setIsSigningIn(false);
         }
+      }
+    }
+  };
+  const onGoogleSignIn = (e) => {
+    e.preventDefault();
+    if (!isSigningIn){
+      setIsSigningIn(true);
+      doSignInWithGoogle().catch(err => {
+        setIsSigningIn(false);
       })
-
-      //toggles password visibilty through the eye icon
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-  function handleSubmit(e) {
-    e.preventDefault(); //prevent default form submission behavior
-
-    //checks if the username is at least 6 characters long
-    if (username.length < 6) {
-      setErrorMessageUser("Username must be at least 6 characters long");
-      setErrorMessageExistsUser(true);
-    } else {
-      setErrorMessageExistsUser(false);
-    }
-    if (errorMessageExistsUser) {
-      //Stop if username validation fails
-      return;
-    }
-    if (username.includes(".ADMIN") === true) {
-      adminPost(username, password);
-      return;
-    }
-
-    const dataSalt = {
-      username: username,
-      email: emailExists,
-      type: "salt",
-    };
-    //Send Post request to backend
-    fetch("http://localhost:5000/3000", {
-      method: "POST", //HTTP method
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataSalt), //Convert data to JSON
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "failure") {
-          //If the response is a failure, display the error message
-          setGotoMainPage(false);
-          setLoginFailMSG(data.message);
-          setLoginFail(true);
-        } else {
-          //login success
-          setGlobalState("usesEmail", emailExists); //tracks if email already exists
-          setGlobalState("account", username);
-          const p = data.salt + password;
-          let hash = CryptoJS.SHA256(p).toString(); //Hash the username
-          submit(hash);
-        }
-      })
-
-      //toggles password visibilty through the eye icon
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-  function eye_change() {
-    if (revealPassword) {
-      setRevealPassword(false);
-    } else {
-      setRevealPassword(true);
     }
   }
-
-  //Function to handle changes in the username input field
-  function handleChangeUser(e) {
-    const user = e.target.value;
-    setUsername(user); //Update the username state
-
-    //checks username length
-    if (username.length < 6) {
-      setErrorMessageUser("Username must be at least 6 characters long");
-      setErrorMessageExistsUser(true);
-    } else {
-      setErrorMessageExistsUser(false);
-    }
-    if (username.includes("@") === true) {
-      //checks if the username contains an @ symbol
-      setEmailExists(true); //If it does, set emailExists to true
-    } else {
-      //If it does not, set emailExists to false
-      setEmailExists(false);
-    }
+  const handleChangeEmail = (e) =>{
+    setEmail(e.target.value);
   }
-  function handleInvalid(event) {
-    event.preventDefault(); // Prevent the form from submitting
+  const handleChangePass = (e) =>{
+    setPassword(e.target.value);
   }
-
-  //Function to handle changes in the password input field
-  function handleChangePass(e) {
-    const pass = e.target.value;
-    setPassword(pass);
-    // setHashedPass(CryptoJS.SHA256(pass).toString());
-
-    //checks password length
-    if (pass.length < 8) {
-      setErrorMessagePass("Password must be at least 8 characters long");
-      setErrorMessageExistsPass(true);
-    } else if (pass.search(/(?=.*\W)(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).*/) < 0) {
-      setErrorMessagePass(
-        "Password must contain at least one number, one uppercase letter, and one special character"
-      );
-      setErrorMessageExistsPass(true);
-    } else {
-      setErrorMessageExistsPass(false);
-    }
-  }
-
-  //Render the sign-in form
   return (
     <div className="page" style={{ backgroundColor: backgroundColor }}>
       {/* Redirect the user to the main page if authentication cookies exist or login succeeds */}
-      {ADMIN && <Navigate to="/ADMIN" />}
-      {isCookie() && <Navigate to="/mainPage" />}
-      {gotoMainPage && <Navigate to="/mainPage" />}
-
+      
+      {userLoggedIn && <Navigate to="/mainPage" />}
+      <Navbar />
       <Box>
-        <div>
+        <div style={{flex:'1'}}>
           {/* Title of the page */}
           <h1
             style={{
               position: "relative",
-              color: backgroundColor,
+              color: headerCol,
               paddingTop: "20px",
             }}
           >
-            {" "}
             Sign In
           </h1>
         </div>
         {/* Form submission handler */}
-        <form className="form" onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit} style={{flex:"5"}}>
           {/* Username input component */}
-          <UsernameInput
-            username={username}
-            handleChangeUser={handleChangeUser}
-            handleInvalid={handleInvalid}
-          />
-
-          <div className="errorMSG">
-            {/* Display username error messages if validation fails */}
-            {errorMessageExistsUser && <span>{errorMessageUser}</span>}
+          <div className="divInputBox">
+            <input        
+              className="inputBox"
+              type="email"
+              value={email}
+              onChange={handleChangeEmail}
+              placeholder="email@gmail.com"
+              size="40"
+              height="40px"
+              maxLength={40}
+              minLength={6}
+              required
+            />
+          <br />
           </div>
+          
 
           {/* Password input component */}
-          <PasswordInput
-            password={password}
-            handleChangePass={handleChangePass}
-            handleInvalid={handleInvalid}
-            eye_change={eye_change}
-            revealPassword={revealPassword}
-          />
+          
+          <div className="divInputBox">
+            <input        
+              className="inputBox"
+              type={type}
+              value={password}
+              onChange={handleChangePass}
+              placeholder="Password123!"
+              size="40"
+              height="40px"
+              maxLength={40}
+              minLength={6}
+              required
+            />
+            <img 
+              src={eyeImg} 
+              onClick={revealPassword} 
+              className="password_eye" 
+              style={{ position: "absolute" }}
+              alt="password reveal eye"
+            />
+          <br />
+          </div>
           <div className="errorMSG">
-            {errorMessageExistsPass && <span>{errorMessagePass}</span>}
+            {errorMessage && <span>{errorMessage}</span>}
           </div>
 
           {/* Submit button */}
@@ -228,7 +135,7 @@ export function SignInForm() {
             <button
               type="submit"
               className="submitButton"
-              style={{ backgroundColor: backgroundColor, color: wordColor }}
+              style={{ backgroundColor: backgroundColor, color: wordColor,cursor:'pointer' }}
             >
               Submit
             </button>
@@ -243,41 +150,48 @@ export function SignInForm() {
               left: "10%",
             }}
           >
-            <br />
-            {loginFail && (
-              <span
-                className="errorMSG"
-                style={{ width: "auto", minWidth: "303px" }}
-              >
-                {loginFailMSG}
-              </span>
-            )}
+            
           </div>
         </form>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "30px",
-          }}
-        >
-          <span style={{ position: "relative" }}>
-            <Link
-              to="/resetPassword"
-              style={{ textDecoration: "none", color: "blue" }}
-            >
-              Forgot Password?
-            </Link>
-          </span>
+        <div style={{flex:'5'}}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "0px",
+              fontSize:'14px'
+            }}
+          >
+            <span style={{ position: "relative" }}>
+              <Link
+                to="/resetPassword"
+                style={{ textDecoration: "none", color: "blue" ,paddingLeft:'20px',fontSize:'14px'}}
+              >
+                Forgot Password?
+              </Link>
+            </span>
 
-          <span style={{ position: "relative" }}>
-            <Link
-              to="/Register"
-              style={{ textDecoration: "none", color: "blue" }}
-            >
-              Register
-            </Link>
-          </span>
+            <span style={{ position: "relative" }}>
+              <Link
+                to="/Register"
+                style={{ textDecoration: "none", color: "blue",paddingRight:'20px' }}
+              >
+                Register
+              </Link>
+            </span>
+          </div>
+          <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',marginTop:'10px ' }}>
+            <hr style={{ width: '40%', border: '1px solid', color: backgroundColor, margin: '0 5%' }} />
+            <span style={{ padding: '0' }}>or</span>
+            <hr style={{ width: '40%', border: '1px solid', color: backgroundColor, margin: '0 5%' }} />
+          </div>
+
+
+          <button onClick={onGoogleSignIn} className="submitButton" style={{color:headerCol,marginTop:'10px',cursor:'pointer'}}>
+            Sign in with Google
+          </button>
+          </div>
         </div>
       </Box>
     </div>

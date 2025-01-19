@@ -8,8 +8,59 @@ import "../../App.css";
 import "../../APictures.css";
 import { setGlobalState, useGlobalState } from "../../GlobalVars";
 import Dropdown from "../dropdown/Dropdown";
+import { useNavigate } from "react-router-dom";
+export const Navbar = () => {
+  const [headerColor] = useGlobalState("headerColor");
+  const [wordColor] = useGlobalState("wordColor");
+  const navigate = useNavigate();
+  // Function to toggle dark mode
+  
 
-const Navbar = () => {
+  
+
+
+
+  return (
+    <header
+      className="header"
+      style={{
+        backgroundColor: headerColor,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "10px 20px",
+      }}
+    >
+      {/* Movie Match Icon and title */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          
+          justifyContent: "flex-end",
+          cursor:'pointer '
+        }}
+        onClick={()=>{
+          navigate('/')
+        }}
+      >
+        <img
+          src={MovieMatchIcon}
+          alt="Movie Match Icon"
+          className="icon"
+          style={{ width: "50px", height: "50px", marginRight: "10px" }}
+        />
+        <h1 className="frontPageTitleFront" style={{ color: wordColor, margin: 0 }}>
+          Movie Match
+        </h1>
+      </div>
+
+      
+      
+    </header>
+  );
+};
+export const NavbarFront = () => {
   const [darkMode] = useGlobalState("DarkMode");
   const [headerColor] = useGlobalState("headerColor");
   const [wordColor] = useGlobalState("wordColor");
@@ -74,7 +125,7 @@ const Navbar = () => {
           className="icon"
           style={{ width: "50px", height: "50px", marginRight: "10px" }}
         />
-        <h1 className="frontPageTitle" style={{ color: wordColor, margin: 0 }}>
+        <h1 className="frontPageTitleFront" style={{ color: wordColor, margin: 0 }}>
           Movie Match
         </h1>
       </div>
@@ -82,11 +133,11 @@ const Navbar = () => {
       {/* Adds the breakpoint for the  */}
       {isMobile ? (
         <>
-          <div onClick={toggleDropdown} style={{ cursor: "pointer" }}>
+          <div onClick={toggleDropdown} style={{ cursor: "pointer", display:'flex',justifyContent:'center',alignItems:'center' }}>
             <img
               src={menu}
               alt="menu icon"
-              style={{ width: "30px", paddingRight: "0" }}
+              style={{ position:'absolute', width: "30px", paddingRight: "0",right:'1rem' }}
             />
           </div>
           {isDropdownOpen && (
@@ -135,13 +186,13 @@ const Navbar = () => {
               Sign in
             </Link>
           </span>
-          <div className="sun">
+          <div >
             <img
               src={darkMode ? darkSun : sun}
               alt="dark mode toggle"
               className="dark_mode"
               onClick={dark_mode}
-              style={{ width: "30px", cursor: "pointer" }}
+              style={{width:'2vw', height:'auto',cursor: "pointer"}}
             />
           </div>
         </div>
@@ -150,4 +201,3 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../../App.css";
 import darkSun from "../../pictures/sun.png";
 import sun from "../../pictures/sunBright.png";
@@ -6,10 +6,10 @@ import { setGlobalState, useGlobalState } from "../../GlobalVars";
 
 const Dropdown = ({ children }) => {
   const [darkMode] = useGlobalState("DarkMode");
-  const [headerColor] = useGlobalState("headerColor");
-  const [wordColor] = useGlobalState("wordColor");
-  const [isMobile, setIsMobile] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [headerColor] = useGlobalState("headerColor");
+  // const [wordColor] = useGlobalState("wordColor");
+  // const [isMobile, setIsMobile] = useState(false);
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   function dark_mode() {
     if (darkMode) {

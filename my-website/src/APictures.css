@@ -22,7 +22,7 @@
   .dark_mode {
     width: 1.61vw;
     height: 3.1vh;
-    transform: translate(.78125vw, .333vh);
+    transform: translate(0, .333vh);
     border: 2px solid #ffffff27; /* Add a border with color */
     border-radius: 50%;
     

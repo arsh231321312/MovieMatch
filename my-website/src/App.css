@@ -6,6 +6,20 @@ that is generated to you */
 
 /* Fixes the screen to be max instead of adding the left
 and right scroll bar */
+.header h1 {
+  width: 75vw;
+  overflow-wrap: break-word;
+  font-size: 2rem; /* Default for monitors */
+}
+@media (max-width: 500px){
+.header h1 {
+  font-size: 1.2rem; /* Adjust for smaller screens */
+}
+}
+
+
+
+
 
 * {
   margin: 0;
@@ -52,23 +66,42 @@ and right scroll bar */
   }
 }
 
-.have-account {
-  padding-top: none;
-  padding-bottom: 100px;
-  color: red;
-}
 
-.box {
-  min-width: 400px;
-  min-height: 400px;
-  background-color: #c6c7c8; /* You can change the color as needed */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 10px;
-  height:auto;
-  width: auto;
+@media (max-width: 500px){
+  .box {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    max-width: 100%;
+    min-height: 250px;
+    background-color: #c6c7c8; /* You can change the color as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    height:auto;
+    width: auto;
+  }
+}
+@media (min-width:500px){
+  .box {
+
+    display: flex;
+    height: 100vh;
+    flex-direction: column; /* Adjust as needed */
+    min-width: 400px;
+    max-width: 100%;
+    min-height: 400px;
+    background-color: #c6c7c8; /* You can change the color as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    height:auto;
+    width: auto;
+  }
 }
 
 .page {
@@ -95,7 +128,7 @@ and right scroll bar */
 .form{
   position: relative;
   left: 0vw;
-  padding: 10px;
+  padding: 0px;
   font-size: 16px;
   margin-right: 0px;
   border-radius: 4px;
@@ -114,6 +147,7 @@ and right scroll bar */
 .submitButton{
   height: 31px; 
   width: 303px;
+  min-width: auto;
   color: white;
   border: '1px solid #03bafc';
   border-radius: 5px;
@@ -203,17 +237,19 @@ and right scroll bar */
   padding: 2vh;
   left: 11vw;
   position: relative;
+  display: flex;
+  flex-direction: row;
 }
 
 .changeSearchBar{
-  height: 3vh;
+  height: 4vh;
   width:30vw;
   text-align: center;
   font-size: 11px;
   border-radius: 5px;
+  
   justify-content: center;
   align-items: center;
-  transform: translate(0,-50%);
 }
 
 .video-container {
@@ -229,7 +265,12 @@ and right scroll bar */
   max-width: 20vw;
   padding-top: 7.5px;
   padding-bottom: 7.5px;
-  font-size: 16px;
+  font-size:.5rem;
+}
+@media (min-width: 500px) {
+  .prevMoviesButton{
+   font-size: .8rem;
+  }
 }
 
 .prevMoviesContainer{
@@ -266,15 +307,27 @@ and right scroll bar */
 }
 
 @media (min-width: 799px) {
-  .frontPageTitle {
+  .frontPageTitleFront {
     display: flex;
     justify-content: flex-start;
   }
 }
 @media (max-width: 800px) {
-  .frontPageTitle {
+  .frontPageTitleFront {
     display: flex;
     justify-content: flex-start;
+  }
+}
+@media (min-width: 799px) {
+  .frontPageTitle {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media (max-width: 800px) {
+  .frontPageTitle {
+    display: flex;
+    justify-content: center;
   }
 }
 
