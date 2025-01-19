@@ -28,7 +28,7 @@ export function MainPage() {
   const [result, setResult] = useState([]);
   const [refresh, setRefresh] = useState("");
   const authentication = getAuth();
-  const postURL ='http://localhost:5000/3000'  //http://localhost:5000/3000
+  const postURL = 'http://127.0.0.1:5000/3000'  //http://localhost:5000/3000
   // Function to display previous movie suggestions
   function MovieList({ result, wordColor }) {
     const [emailExists] = useGlobalState("usesEmail");
@@ -151,7 +151,7 @@ export function MainPage() {
     };
 
     // Send Post request to backend
-    fetch("http://localhost:5000/3000", {
+    fetch(postURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
